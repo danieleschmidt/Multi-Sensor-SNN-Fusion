@@ -205,3 +205,71 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# SNN-Fusion specific files
+data/raw/
+data/processed/
+data/datasets/
+models/checkpoints/
+models/pretrained/
+outputs/
+cache/
+logs/
+*.h5
+*.hdf5
+*.npy
+*.npz
+*.pkl
+*.pickle
+*.spike
+*.snn
+
+# Development container cache
+.devcontainer/cache/
+.devcontainer/pip-cache/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Neuromorphic hardware files
+*.nxlog
+*.akida
+*.spinn
+*.loihi
+
+# Profiling output
+*.prof
+*.lprof
+*.cprof
+
+# Temporary files
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+
+# Large model files
+*.pth
+*.pt
+*.ckpt
+*.model
+
+# Visualization outputs
+plots/
+figures/
+
+# Configuration overrides
+config.local.yaml
+config.override.yaml
+
+# Experiment tracking
+mlruns/
+wandb/
+
+# Secrets
+secrets/
+*.key
+*.pem
+*.p12
