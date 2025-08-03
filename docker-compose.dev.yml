@@ -1,0 +1,198 @@
+# Docker Compose for SNN-Fusion Development Environment
+version: '3.8'
+
+services:
+  # Development API service
+  snn-fusion-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+      args:
+        BUILD_ENV: development
+    image: snn-fusion:dev
+    container_name: snn-fusion-dev
+    ports:
+      - "8080:8080"
+      - "8888:8888"  # Jupyter
+      - "6006:6006"  # TensorBoard
+    environment:
+      - DATABASE_TYPE=sqlite
+      - DATABASE_PATH=/app/data/snn_fusion_dev.db
+      - REDIS_URL=redis://redis:6379/1
+      - SECRET_KEY=dev-secret-key
+      - DEBUG=true
+      - LOG_LEVEL=DEBUG
+      - FLASK_ENV=development
+      - PYTHONPATH=/app/src
+    volumes:
+      # Mount source code for hot reload
+      - ./src:/app/src
+      - ./tests:/app/tests
+      - ./configs:/app/configs
+      - ./scripts:/app/scripts
+      - ./notebooks:/app/notebooks
+      # Data directories
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./outputs:/app/outputs
+      - ./logs:/app/logs
+      - ./cache:/app/cache
+    command: ["python", "-m", "flask", "--app", "snn_fusion.api.app", "run", "--host", "0.0.0.0", "--port", "8080", "--debug"]
+    depends_on:
+      - redis
+    restart: unless-stopped
+    networks:
+      - snn-fusion-dev
+    stdin_open: true
+    tty: true
+
+  # Redis for development
+  redis:
+    image: redis:7-alpine
+    container_name: snn-fusion-redis-dev
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_dev_data:/data
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+    networks:
+      - snn-fusion-dev
+
+  # Jupyter Lab service
+  jupyter:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    image: snn-fusion:dev
+    container_name: snn-fusion-jupyter
+    ports:
+      - "8889:8888"
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+      - JUPYTER_TOKEN=snn-fusion-dev
+      - PYTHONPATH=/app/src
+    volumes:
+      - ./src:/app/src
+      - ./notebooks:/app/notebooks
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./outputs:/app/outputs
+    command: ["jupyter", "lab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root", "--NotebookApp.token=snn-fusion-dev"]
+    restart: unless-stopped
+    networks:
+      - snn-fusion-dev
+
+  # Development database (PostgreSQL)
+  postgres-dev:
+    image: postgres:15-alpine
+    container_name: snn-fusion-postgres-dev
+    environment:
+      - POSTGRES_DB=snn_fusion_dev
+      - POSTGRES_USER=dev_user
+      - POSTGRES_PASSWORD=dev_password
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    restart: unless-stopped
+    networks:
+      - snn-fusion-dev
+
+  # Development monitoring
+  prometheus-dev:
+    image: prom/prometheus:latest
+    container_name: snn-fusion-prometheus-dev
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=24h'
+      - '--web.enable-lifecycle'
+      - '--web.enable-admin-api'
+    volumes:
+      - ./configs/prometheus-dev.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_dev_data:/prometheus
+    ports:
+      - "9091:9090"
+    restart: unless-stopped
+    networks:
+      - snn-fusion-dev
+
+  # Development dashboard
+  grafana-dev:
+    image: grafana/grafana:latest
+    container_name: snn-fusion-grafana-dev
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=true
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
+    volumes:
+      - grafana_dev_data:/var/lib/grafana
+      - ./configs/grafana/dev-dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./configs/grafana/dev-datasources:/etc/grafana/provisioning/datasources:ro
+    ports:
+      - "3001:3000"
+    depends_on:
+      - prometheus-dev
+    restart: unless-stopped
+    networks:
+      - snn-fusion-dev
+
+  # Development file server for static assets
+  fileserver:
+    image: nginx:alpine
+    container_name: snn-fusion-fileserver
+    volumes:
+      - ./static:/usr/share/nginx/html:ro
+      - ./outputs:/usr/share/nginx/html/outputs:ro
+      - ./docs/_build/html:/usr/share/nginx/html/docs:ro
+    ports:
+      - "8000:80"
+    restart: unless-stopped
+    networks:
+      - snn-fusion-dev
+
+  # Test runner service
+  test-runner:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    image: snn-fusion:dev
+    container_name: snn-fusion-tests
+    environment:
+      - PYTHONPATH=/app/src
+      - DATABASE_TYPE=sqlite
+      - DATABASE_PATH=:memory:
+    volumes:
+      - ./src:/app/src
+      - ./tests:/app/tests
+      - ./outputs:/app/outputs
+    command: ["pytest", "--cov=snn_fusion", "--cov-report=html:/app/outputs/coverage"]
+    networks:
+      - snn-fusion-dev
+    profiles:
+      - testing
+
+# Development volumes
+volumes:
+  redis_dev_data:
+    driver: local
+  postgres_dev_data:
+    driver: local
+  prometheus_dev_data:
+    driver: local
+  grafana_dev_data:
+    driver: local
+
+# Development network
+networks:
+  snn-fusion-dev:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.21.0.0/16

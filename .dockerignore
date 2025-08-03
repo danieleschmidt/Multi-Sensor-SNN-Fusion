@@ -1,0 +1,171 @@
+# Git and version control
+.git
+.gitignore
+.gitattributes
+
+# Python cache and virtual environments
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.venv/
+venv/
+env/
+ENV/
+
+# Development tools
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.ruff_cache/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Documentation build
+docs/_build/
+site/
+
+# Large data files
+data/raw/
+data/processed/
+data/datasets/
+*.h5
+*.hdf5
+*.npy
+*.npz
+*.pkl
+*.pickle
+
+# Model files
+models/checkpoints/
+models/pretrained/
+*.pth
+*.pt
+*.ckpt
+*.model
+
+# Output files
+outputs/
+logs/
+cache/
+*.log
+plots/
+figures/
+*.png
+*.jpg
+*.jpeg
+*.svg
+*.pdf
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+tmp/
+
+# Docker files (avoid recursive copying)
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# CI/CD files
+.github/
+.gitlab-ci.yml
+.travis.yml
+Jenkinsfile
+
+# Development container
+.devcontainer/
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Secrets and keys
+secrets/
+*.key
+*.pem
+*.p12
+
+# Large dependencies that should be installed fresh
+node_modules/
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Neuromorphic hardware files
+*.nxlog
+*.akida
+*.spinn
+*.loihi
+
+# Profiling output
+*.prof
+*.lprof
+*.cprof
+
+# Test coverage
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Build artifacts
+*.tar.gz
+*.zip
+*.rar
+
+# Configuration overrides
+config.local.*
+config.override.*
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# Experiment tracking
+mlruns/
+wandb/
+
+# README and documentation that should be copied
+!README.md
+!CHANGELOG.md
+!LICENSE
