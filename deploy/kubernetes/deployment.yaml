@@ -1,0 +1,419 @@
+# Multi-Sensor SNN-Fusion Kubernetes Deployment
+# Global-first neuromorphic computing deployment with multi-region support
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: snn-fusion-api
+  labels:
+    app: snn-fusion
+    component: api
+    version: v1.0.0
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+    app.kubernetes.io/managed-by: "terragon-labs"
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: snn-fusion
+      component: api
+  template:
+    metadata:
+      labels:
+        app: snn-fusion
+        component: api
+        version: v1.0.0
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        prometheus.io/path: "/metrics"
+    spec:
+      # Security context
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      
+      # Multi-region node affinity
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            preference:
+              matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values: ["amd64", "arm64"]
+          - weight: 50
+            preference:
+              matchExpressions:
+              - key: node.kubernetes.io/instance-type
+                operator: In
+                values: ["compute-optimized", "memory-optimized"]
+        
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values: ["snn-fusion"]
+              topologyKey: kubernetes.io/hostname
+      
+      # Tolerations for specialized nodes
+      tolerations:
+      - key: "gpu"
+        operator: "Equal"
+        value: "true"
+        effect: "NoSchedule"
+      - key: "neuromorphic"
+        operator: "Equal" 
+        value: "true"
+        effect: "NoSchedule"
+      
+      containers:
+      - name: snn-fusion-api
+        image: terragonlabs/snn-fusion:v1.0.0
+        imagePullPolicy: IfNotPresent
+        
+        ports:
+        - name: http
+          containerPort: 8000
+          protocol: TCP
+        - name: metrics
+          containerPort: 8080
+          protocol: TCP
+        
+        # Resource limits and requests
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "500m"
+            ephemeral-storage: "1Gi"
+          limits:
+            memory: "8Gi" 
+            cpu: "4"
+            ephemeral-storage: "10Gi"
+            # GPU resources (if available)
+            # nvidia.com/gpu: 1
+        
+        # Environment variables
+        env:
+        - name: SNN_FUSION_ENV
+          value: "production"
+        - name: SNN_FUSION_LOG_LEVEL
+          value: "INFO"
+        - name: SNN_FUSION_API_HOST
+          value: "0.0.0.0"
+        - name: SNN_FUSION_API_PORT
+          value: "8000"
+        - name: SNN_FUSION_METRICS_PORT
+          value: "8080"
+        - name: PYTHONPATH
+          value: "/app/src"
+        
+        # ConfigMap and Secret mounts
+        envFrom:
+        - configMapRef:
+            name: snn-fusion-config
+        - secretRef:
+            name: snn-fusion-secrets
+        
+        # Volume mounts
+        volumeMounts:
+        - name: data-volume
+          mountPath: /app/data
+        - name: models-volume
+          mountPath: /app/models
+        - name: logs-volume
+          mountPath: /app/logs
+        - name: config-volume
+          mountPath: /app/config
+          readOnly: true
+        - name: tmp-volume
+          mountPath: /tmp
+        
+        # Health checks
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: http
+            scheme: HTTP
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 3
+          successThreshold: 1
+        
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: http
+            scheme: HTTP
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+          successThreshold: 1
+        
+        startupProbe:
+          httpGet:
+            path: /health
+            port: http
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 30
+          successThreshold: 1
+        
+        # Security context
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 1000
+          capabilities:
+            drop:
+            - ALL
+      
+      # Volumes
+      volumes:
+      - name: data-volume
+        persistentVolumeClaim:
+          claimName: snn-fusion-data-pvc
+      - name: models-volume
+        persistentVolumeClaim:
+          claimName: snn-fusion-models-pvc
+      - name: logs-volume
+        emptyDir:
+          sizeLimit: 1Gi
+      - name: config-volume
+        configMap:
+          name: snn-fusion-config
+          defaultMode: 0644
+      - name: tmp-volume
+        emptyDir:
+          sizeLimit: 500Mi
+
+---
+# Service for API
+apiVersion: v1
+kind: Service
+metadata:
+  name: snn-fusion-api-service
+  labels:
+    app: snn-fusion
+    component: api
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+    service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
+spec:
+  type: LoadBalancer
+  ports:
+  - name: http
+    port: 80
+    targetPort: http
+    protocol: TCP
+  - name: https
+    port: 443
+    targetPort: http
+    protocol: TCP
+  selector:
+    app: snn-fusion
+    component: api
+  sessionAffinity: ClientIP
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 300
+
+---
+# HorizontalPodAutoscaler
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: snn-fusion-api-hpa
+  labels:
+    app: snn-fusion
+    component: api
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: snn-fusion-api
+  minReplicas: 2
+  maxReplicas: 20
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  - type: Pods
+    pods:
+      metric:
+        name: snn_fusion_requests_per_second
+      target:
+        type: AverageValue
+        averageValue: "100"
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Percent
+        value: 50
+        periodSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 60
+      policies:
+      - type: Percent
+        value: 100
+        periodSeconds: 30
+
+---
+# PodDisruptionBudget
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: snn-fusion-api-pdb
+  labels:
+    app: snn-fusion
+    component: api
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: snn-fusion
+      component: api
+
+---
+# ConfigMap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: snn-fusion-config
+  labels:
+    app: snn-fusion
+data:
+  # Application configuration
+  app.yaml: |
+    api:
+      host: "0.0.0.0"
+      port: 8000
+      workers: 4
+      timeout: 300
+      max_request_size: "100MB"
+      
+    logging:
+      level: "INFO"
+      format: "json"
+      file: "/app/logs/snn-fusion.log"
+      max_size: "100MB"
+      backup_count: 5
+      
+    models:
+      cache_dir: "/app/models"
+      default_device: "cpu"
+      max_memory_gb: 4.0
+      
+    datasets:
+      data_dir: "/app/data"
+      cache_size: "1GB"
+      
+    monitoring:
+      enabled: true
+      port: 8080
+      metrics_interval: 30
+      
+    security:
+      enable_cors: true
+      cors_origins: ["*"]
+      rate_limit: "1000/hour"
+      max_file_size: "100MB"
+    
+    # Regional configurations
+    regions:
+      us-east-1:
+        timezone: "America/New_York"
+        locale: "en_US.UTF-8"
+      eu-west-1:
+        timezone: "Europe/London"  
+        locale: "en_GB.UTF-8"
+      ap-southeast-1:
+        timezone: "Asia/Singapore"
+        locale: "en_SG.UTF-8"
+      
+    # Multi-language support
+    i18n:
+      default_language: "en"
+      supported_languages: ["en", "es", "fr", "de", "ja", "zh"]
+      
+  # Model configurations
+  models.yaml: |
+    hierarchical_fusion:
+      levels: 3
+      base_hidden_dim: 256
+      fusion_type: "attention"
+      dropout: 0.1
+      
+    lsm:
+      n_neurons: 1000
+      connectivity: 0.1
+      spectral_radius: 0.9
+      tau_mem: 20.0
+      tau_adapt: 100.0
+      
+    training:
+      batch_size: 32
+      learning_rate: 0.001
+      epochs: 100
+      optimizer: "adam"
+      scheduler: "cosine"
+
+---
+# Persistent Volume Claims
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: snn-fusion-data-pvc
+  labels:
+    app: snn-fusion
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: fast-ssd
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: snn-fusion-models-pvc
+  labels:
+    app: snn-fusion
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: fast-ssd
