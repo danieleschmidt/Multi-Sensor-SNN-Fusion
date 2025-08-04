@@ -519,10 +519,10 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for:
 ```bibtex
 @dataset{multi-sensor-snn-fusion,
   title={Multi-Sensor SNN-Fusion: A Neuromorphic Dataset and Framework},
-  author={Your Name},
+  author={Daniel Schmidt},
   year={2025},
   publisher={GitHub},
-  url={https://github.com/yourusername/Multi-Sensor-SNN-Fusion}
+  url={https://github.com/danieleschmidt/Multi-Sensor-SNN-Fusion}
 }
 ```
 
