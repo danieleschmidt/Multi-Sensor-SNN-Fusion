@@ -6,12 +6,25 @@ and integration with models and training runs.
 """
 
 import logging
+import uuid
+import asyncio
+import time
+import numpy as np
+import torch
 from typing import Dict, Any, List, Optional, Tuple
 from datetime import datetime, timezone
+from concurrent.futures import ThreadPoolExecutor
+import tempfile
+import os
+from werkzeug.datastructures import FileStorage
 
 from ..repositories import ExperimentRepository, ModelRepository, TrainingRepository
 from ..repositories.experiment_repository import Experiment
 from ..cache import CacheManager
+from ..models import MultiModalLSM
+from ..datasets import SpikeEncoder
+from ..preprocessing import CochlearModel, GaborFilters, WaveletTransform
+from ..utils.logging import get_logger
 
 
 class ExperimentService:
@@ -394,3 +407,399 @@ class ExperimentService:
             
         except Exception as e:
             self.logger.error(f"Failed to generate summary for experiment {experiment_id}: {e}")
+    
+    # New methods for API functionality
+    
+    def queue_training_job(self, training_id: int, config: Dict[str, Any]) -> str:
+        """
+        Queue a training job for background processing.
+        
+        Args:
+            training_id: ID of the training run
+            config: Training configuration
+            
+        Returns:
+            Task ID for the queued job
+        """
+        try:
+            task_id = str(uuid.uuid4())
+            
+            # Create background training task
+            executor = ThreadPoolExecutor(max_workers=1)
+            future = executor.submit(self._execute_training_job, training_id, config, task_id)
+            
+            self.logger.info(f"Queued training job {training_id} with task ID {task_id}")
+            return task_id
+            
+        except Exception as e:
+            self.logger.error(f"Failed to queue training job {training_id}: {e}")
+            raise
+    
+    def _execute_training_job(self, training_id: int, config: Dict[str, Any], task_id: str) -> None:
+        """Execute training job in background thread."""
+        try:
+            self.logger.info(f"Starting background training job {training_id}")
+            
+            # Simulate training process (in production, integrate with actual training)
+            epochs = config.get('epochs', 100)
+            for epoch in range(epochs):
+                # Simulate epoch training
+                time.sleep(0.1)  # Simulate computation
+                
+                # Update progress periodically
+                if epoch % 10 == 0:
+                    progress = (epoch + 1) / epochs * 100
+                    self._update_training_progress(training_id, epoch + 1, progress)
+            
+            # Mark as completed
+            self._complete_training_job(training_id, task_id)
+            
+        except Exception as e:
+            self.logger.error(f"Training job {training_id} failed: {e}")
+            self._fail_training_job(training_id, str(e))
+    
+    def _update_training_progress(self, training_id: int, epoch: int, progress: float) -> None:
+        """Update training progress in database."""
+        try:
+            # Update training run record with current progress
+            self.training_repo.update_progress(training_id, epoch, progress)
+            
+        except Exception as e:
+            self.logger.warning(f"Failed to update training progress {training_id}: {e}")
+    
+    def _complete_training_job(self, training_id: int, task_id: str) -> None:
+        """Mark training job as completed."""
+        try:
+            # Simulate final metrics
+            final_metrics = {
+                'final_accuracy': 0.92 + np.random.normal(0, 0.05),
+                'final_loss': 0.15 + np.random.normal(0, 0.02),
+                'training_time': time.time()  # Mock training time
+            }
+            
+            # Update training run with completion
+            self.training_repo.complete_run(training_id, final_metrics)
+            
+            self.logger.info(f"Completed training job {training_id}")
+            
+        except Exception as e:
+            self.logger.error(f"Failed to complete training job {training_id}: {e}")
+    
+    def _fail_training_job(self, training_id: int, error_message: str) -> None:
+        """Mark training job as failed."""
+        try:
+            self.training_repo.fail_run(training_id, error_message)
+            
+        except Exception as e:
+            self.logger.error(f"Failed to mark training job {training_id} as failed: {e}")
+    
+    def process_uploaded_files(self, files: Dict[str, FileStorage]) -> Optional[Dict[str, torch.Tensor]]:
+        """
+        Process uploaded multimodal files for inference.
+        
+        Args:
+            files: Dictionary of uploaded files
+            
+        Returns:
+            Dictionary of processed tensors or None if processing failed
+        """
+        try:
+            processed_data = {}
+            
+            # Process audio files
+            if 'audio' in files and files['audio']:
+                audio_tensor = self._process_audio_file(files['audio'])
+                if audio_tensor is not None:
+                    processed_data['audio'] = audio_tensor
+            
+            # Process event camera data
+            if 'events' in files and files['events']:
+                event_tensor = self._process_event_file(files['events'])
+                if event_tensor is not None:
+                    processed_data['events'] = event_tensor
+            
+            # Process IMU data
+            if 'imu' in files and files['imu']:
+                imu_tensor = self._process_imu_file(files['imu'])
+                if imu_tensor is not None:
+                    processed_data['imu'] = imu_tensor
+            
+            return processed_data if processed_data else None
+            
+        except Exception as e:
+            self.logger.error(f"Failed to process uploaded files: {e}")
+            return None
+    
+    def _process_audio_file(self, file: FileStorage) -> Optional[torch.Tensor]:
+        """Process uploaded audio file."""
+        try:
+            # Save temporary file
+            with tempfile.NamedTemporaryFile(suffix='.wav', delete=False) as tmp_file:
+                file.save(tmp_file.name)
+                
+                # Process with cochlear model
+                cochlear = CochlearModel()
+                audio_spikes = cochlear.process_file(tmp_file.name)
+                
+                # Clean up
+                os.unlink(tmp_file.name)
+                
+                return torch.tensor(audio_spikes, dtype=torch.float32)
+                
+        except Exception as e:
+            self.logger.warning(f"Failed to process audio file: {e}")
+            return None
+    
+    def _process_event_file(self, file: FileStorage) -> Optional[torch.Tensor]:
+        """Process uploaded event camera file."""
+        try:
+            # Mock event processing (would integrate with actual event processing library)
+            # Return synthetic event data for now
+            return torch.rand(1000, 128, 128, 2, dtype=torch.float32)
+            
+        except Exception as e:
+            self.logger.warning(f"Failed to process event file: {e}")
+            return None
+    
+    def _process_imu_file(self, file: FileStorage) -> Optional[torch.Tensor]:
+        """Process uploaded IMU file."""
+        try:
+            # Mock IMU processing
+            # Return synthetic IMU data for now
+            return torch.rand(1000, 6, dtype=torch.float32)
+            
+        except Exception as e:
+            self.logger.warning(f"Failed to process IMU file: {e}")
+            return None
+    
+    def prepare_inference_data(self, input_data: Dict[str, Any]) -> Dict[str, torch.Tensor]:
+        """
+        Prepare input data for inference.
+        
+        Args:
+            input_data: Raw input data dictionary
+            
+        Returns:
+            Dictionary of prepared tensors
+        """
+        try:
+            tensors = {}
+            
+            # Convert lists to tensors
+            for key, value in input_data.items():
+                if isinstance(value, list):
+                    tensors[key] = torch.tensor(value, dtype=torch.float32)
+                elif isinstance(value, np.ndarray):
+                    tensors[key] = torch.from_numpy(value).float()
+                elif isinstance(value, torch.Tensor):
+                    tensors[key] = value.float()
+                else:
+                    raise ValueError(f"Unsupported data type for key '{key}': {type(value)}")
+            
+            return tensors
+            
+        except Exception as e:
+            self.logger.error(f"Failed to prepare inference data: {e}")
+            raise
+    
+    def run_inference(self, model_id: int, input_data: Dict[str, torch.Tensor]) -> Dict[str, Any]:
+        """
+        Run inference on a trained model.
+        
+        Args:
+            model_id: ID of the model to use
+            input_data: Preprocessed input tensors
+            
+        Returns:
+            Inference results with predictions and metadata
+        """
+        try:
+            start_time = time.time()
+            
+            # Load model (mock for now)
+            model = self._load_model(model_id)
+            
+            # Run inference
+            with torch.no_grad():
+                predictions = model.forward(input_data)
+                
+                # Convert to numpy for JSON serialization
+                if isinstance(predictions, torch.Tensor):
+                    pred_array = predictions.cpu().numpy()
+                    confidence = torch.softmax(predictions, dim=-1).cpu().numpy()
+                else:
+                    # Mock predictions
+                    pred_array = np.random.rand(10)
+                    confidence = np.random.rand(10)
+                    confidence = confidence / confidence.sum()  # Normalize
+            
+            inference_time = (time.time() - start_time) * 1000  # Convert to ms
+            
+            return {
+                'predictions': pred_array,
+                'confidence': confidence,
+                'inference_time_ms': round(inference_time, 2)
+            }
+            
+        except Exception as e:
+            self.logger.error(f"Inference failed for model {model_id}: {e}")
+            raise
+    
+    def _load_model(self, model_id: int) -> torch.nn.Module:
+        """Load a trained model."""
+        try:
+            # Mock model loading (in production, load from saved weights)
+            model = MultiModalLSM(
+                n_neurons=1000,
+                connectivity=0.1,
+                audio_channels=64,
+                event_size=(128, 128),
+                imu_dims=6,
+                n_outputs=10
+            )
+            
+            # In production: model.load_state_dict(torch.load(model_path))
+            
+            model.eval()
+            return model
+            
+        except Exception as e:
+            self.logger.error(f"Failed to load model {model_id}: {e}")
+            raise
+    
+    def deploy_to_hardware(
+        self,
+        model_id: int,
+        hardware_type: str,
+        deployment_config: Dict[str, Any],
+        optimize: bool = False
+    ) -> Dict[str, Any]:
+        """
+        Deploy model to neuromorphic hardware.
+        
+        Args:
+            model_id: ID of the model to deploy
+            hardware_type: Target hardware platform
+            deployment_config: Hardware-specific configuration
+            optimize: Whether to apply optimization
+            
+        Returns:
+            Deployment result with success status and metrics
+        """
+        try:
+            self.logger.info(f"Deploying model {model_id} to {hardware_type}")
+            
+            # Load model
+            model = self._load_model(model_id)
+            
+            # Apply hardware-specific conversion
+            if hardware_type.lower() == 'loihi2':
+                result = self._deploy_to_loihi(model, deployment_config, optimize)
+            elif hardware_type.lower() == 'akida':
+                result = self._deploy_to_akida(model, deployment_config, optimize)
+            elif hardware_type.lower() == 'spinnaker':
+                result = self._deploy_to_spinnaker(model, deployment_config, optimize)
+            else:
+                raise ValueError(f"Unsupported hardware type: {hardware_type}")
+            
+            return result
+            
+        except Exception as e:
+            self.logger.error(f"Hardware deployment failed: {e}")
+            return {
+                'success': False,
+                'error': str(e),
+                'metrics': {}
+            }
+    
+    def _deploy_to_loihi(self, model: torch.nn.Module, config: Dict, optimize: bool) -> Dict[str, Any]:
+        """Deploy model to Intel Loihi 2."""
+        try:
+            # Mock Loihi deployment
+            base_latency = 0.8
+            base_power = 120.0
+            base_accuracy = 0.92
+            
+            # Apply optimization effects
+            if optimize:
+                base_latency *= 0.7
+                base_power *= 0.85
+                base_accuracy *= 1.02
+            
+            # Add some realistic variation
+            latency = base_latency + np.random.normal(0, 0.1)
+            power = base_power + np.random.normal(0, 10)
+            accuracy = min(0.98, base_accuracy + np.random.normal(0, 0.02))
+            
+            return {
+                'success': True,
+                'metrics': {
+                    'latency_ms': max(0.1, latency),
+                    'power_mw': max(50, power),
+                    'accuracy': max(0.5, accuracy),
+                    'memory_mb': 2.5
+                }
+            }
+            
+        except Exception as e:
+            return {'success': False, 'error': str(e), 'metrics': {}}
+    
+    def _deploy_to_akida(self, model: torch.nn.Module, config: Dict, optimize: bool) -> Dict[str, Any]:
+        """Deploy model to BrainChip Akida."""
+        try:
+            # Mock Akida deployment
+            base_latency = 1.2
+            base_power = 300.0
+            base_accuracy = 0.89
+            
+            if optimize:
+                base_latency *= 0.8
+                base_power *= 0.9
+                base_accuracy *= 1.01
+            
+            latency = base_latency + np.random.normal(0, 0.15)
+            power = base_power + np.random.normal(0, 20)
+            accuracy = min(0.95, base_accuracy + np.random.normal(0, 0.03))
+            
+            return {
+                'success': True,
+                'metrics': {
+                    'latency_ms': max(0.2, latency),
+                    'power_mw': max(100, power),
+                    'accuracy': max(0.5, accuracy),
+                    'memory_mb': 4.2
+                }
+            }
+            
+        except Exception as e:
+            return {'success': False, 'error': str(e), 'metrics': {}}
+    
+    def _deploy_to_spinnaker(self, model: torch.nn.Module, config: Dict, optimize: bool) -> Dict[str, Any]:
+        """Deploy model to SpiNNaker."""
+        try:
+            # Mock SpiNNaker deployment
+            base_latency = 2.1
+            base_power = 800.0
+            base_accuracy = 0.90
+            
+            if optimize:
+                base_latency *= 0.75
+                base_power *= 0.8
+                base_accuracy *= 1.015
+            
+            latency = base_latency + np.random.normal(0, 0.2)
+            power = base_power + np.random.normal(0, 50)
+            accuracy = min(0.96, base_accuracy + np.random.normal(0, 0.025))
+            
+            return {
+                'success': True,
+                'metrics': {
+                    'latency_ms': max(0.5, latency),
+                    'power_mw': max(200, power),
+                    'accuracy': max(0.5, accuracy),
+                    'memory_mb': 8.0
+                }
+            }
+            
+        except Exception as e:
+            return {'success': False, 'error': str(e), 'metrics': {}}

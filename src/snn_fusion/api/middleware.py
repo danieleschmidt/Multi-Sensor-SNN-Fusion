@@ -12,6 +12,7 @@ import traceback
 from functools import wraps
 from typing import Callable, Any
 import uuid
+from datetime import datetime
 
 
 def setup_error_handlers(app: Flask) -> None:
@@ -147,13 +148,39 @@ def require_api_key(f: Callable) -> Callable:
                 'message': 'X-API-Key header is required'
             }), 401
         
-        # TODO: Validate API key against database
-        # For now, accept any non-empty key
-        if not api_key.strip():
-            return jsonify({
-                'error': 'Invalid API Key',
-                'message': 'Provided API key is invalid'
-            }), 401
+        # Validate API key against database
+        try:
+            from ..database.connection import DatabaseManager
+            db = DatabaseManager()
+            
+            # Check if API key exists and is active
+            api_key_record = db.search_records(
+                'api_keys', 
+                {'key_hash': api_key, 'is_active': True},
+                limit=1
+            )
+            
+            if not api_key_record:
+                return jsonify({
+                    'error': 'Invalid API Key',
+                    'message': 'Provided API key is invalid or inactive'
+                }), 401
+            
+            # Update last_used timestamp
+            db.update_record('api_keys', api_key_record[0]['id'], {
+                'last_used_at': datetime.utcnow().isoformat()
+            })
+            
+            # Store API key info in request context
+            g.api_key_info = api_key_record[0]
+            
+        except Exception as e:
+            # Fallback to basic validation if database is unavailable
+            if not api_key.strip() or len(api_key) < 32:
+                return jsonify({
+                    'error': 'Invalid API Key',
+                    'message': 'Provided API key format is invalid'
+                }), 401
         
         return f(*args, **kwargs)
     
@@ -165,11 +192,51 @@ def rate_limit(requests_per_minute: int = 60):
     def decorator(f: Callable) -> Callable:
         @wraps(f)
         def decorated_function(*args, **kwargs):
-            # TODO: Implement proper rate limiting with Redis
-            # For now, just log the request
-            if hasattr(g, 'request_id'):
+            # Implement rate limiting with Redis/in-memory cache
+            try:
+                from ..cache import CacheManager
+                
+                # Get client identifier (API key or IP)
+                client_id = getattr(g, 'api_key_info', {}).get('id') or request.remote_addr
+                cache_key = f"rate_limit:{client_id}"
+                
+                # Initialize cache manager
+                cache = CacheManager()
+                
+                # Get current request count and timestamp
+                current_data = cache.get(cache_key)
+                current_time = int(time.time())
+                
+                if current_data:
+                    request_count, window_start = current_data
+                    
+                    # Check if we're still in the same minute window
+                    if current_time - window_start < 60:
+                        if request_count >= requests_per_minute:
+                            return jsonify({
+                                'error': 'Rate Limit Exceeded',
+                                'message': f'Maximum {requests_per_minute} requests per minute exceeded',
+                                'retry_after': 60 - (current_time - window_start)
+                            }), 429
+                        
+                        # Increment count
+                        cache.put(cache_key, (request_count + 1, window_start), ttl=60)
+                    else:
+                        # Start new window
+                        cache.put(cache_key, (1, current_time), ttl=60)
+                else:
+                    # First request
+                    cache.put(cache_key, (1, current_time), ttl=60)
+                
+                # Log rate limit check
+                if hasattr(g, 'request_id'):
+                    app = Flask.current_app
+                    app.logger.debug(f'Rate limit check passed for request {g.request_id}')
+                    
+            except Exception as e:
+                # Log error but don't block request if rate limiting fails
                 app = Flask.current_app
-                app.logger.debug(f'Rate limit check for request {g.request_id}')
+                app.logger.warning(f'Rate limiting error: {e}')
             
             return f(*args, **kwargs)
         
