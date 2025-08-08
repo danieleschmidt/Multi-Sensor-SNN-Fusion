@@ -36,8 +36,19 @@ class SpikeTransform:
         return sample
     
     def apply_transform(self, sample: Dict[str, torch.Tensor]) -> Dict[str, torch.Tensor]:
-        """Override this method in subclasses."""
-        raise NotImplementedError
+        """
+        Override this method in subclasses.
+        
+        Args:
+            sample: Dictionary containing multi-modal tensor data
+            
+        Returns:
+            Transformed sample dictionary
+            
+        Raises:
+            NotImplementedError: Must be implemented by subclasses
+        """
+        raise NotImplementedError("apply_transform must be implemented by subclasses")
 
 
 class TemporalJitter(SpikeTransform):

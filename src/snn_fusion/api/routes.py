@@ -285,8 +285,21 @@ def start_training():
         
         training_id = db.insert_record('training_runs', training_record)
         
-        # TODO: Queue training job for background processing
-        # For now, return the created training run
+        # Queue training job for background processing
+        from ..services.experiment_service import ExperimentService
+        experiment_service = ExperimentService()
+        
+        # Create asynchronous training task
+        task_id = experiment_service.queue_training_job(
+            training_id=training_id,
+            config=training_config
+        )
+        
+        # Update training record with task ID
+        db.update_record('training_runs', training_id, {
+            'task_id': task_id,
+            'status': 'queued'
+        })
         
         training_run = db.get_record('training_runs', training_id)
         
@@ -364,8 +377,29 @@ def predict():
                 return jsonify({'error': 'Missing model_id'}), 400
             
             # Process uploaded files (audio, images, etc.)
-            # TODO: Implement file processing
-            return jsonify({'error': 'File upload inference not yet implemented'}), 501
+            # Process uploaded files for inference
+            from ..services.experiment_service import ExperimentService
+            experiment_service = ExperimentService()
+            
+            # Process uploaded multimodal files
+            processed_data = experiment_service.process_uploaded_files(request.files)
+            
+            if not processed_data:
+                return jsonify({'error': 'No valid files provided or processing failed'}), 400
+            
+            # Run inference with processed data
+            predictions = experiment_service.run_inference(
+                model_id=model_id,
+                input_data=processed_data
+            )
+            
+            return jsonify({
+                'model_id': model_id,
+                'predictions': predictions['predictions'].tolist(),
+                'confidence_scores': predictions['confidence'].tolist(),
+                'inference_time_ms': predictions['inference_time_ms'],
+                'timestamp': datetime.utcnow().isoformat()
+            })
             
         else:
             # Handle JSON data
@@ -381,13 +415,31 @@ def predict():
             if not model:
                 return jsonify({'error': 'Model not found'}), 404
             
-            # TODO: Load trained model and run inference
-            # For now, return mock prediction
+            # Load trained model and run inference
+            from ..services.experiment_service import ExperimentService
+            experiment_service = ExperimentService()
+            
+            # Validate input data format
+            if 'input_data' not in data:
+                return jsonify({'error': 'Missing input_data'}), 400
+            
+            # Convert input data to tensors
+            try:
+                input_tensors = experiment_service.prepare_inference_data(data['input_data'])
+            except Exception as e:
+                return jsonify({'error': f'Invalid input format: {str(e)}'}), 400
+            
+            # Run inference
+            predictions = experiment_service.run_inference(
+                model_id=data['model_id'],
+                input_data=input_tensors
+            )
             
             return jsonify({
                 'model_id': data['model_id'],
-                'predictions': [0.1, 0.3, 0.6],  # Mock prediction
-                'inference_time_ms': 2.5,
+                'predictions': predictions['predictions'].tolist(),
+                'confidence_scores': predictions['confidence'].tolist(),
+                'inference_time_ms': predictions['inference_time_ms'],
                 'timestamp': datetime.utcnow().isoformat()
             })
             
@@ -453,15 +505,31 @@ def deploy_to_hardware():
         
         profile_id = db.insert_record('hardware_profiles', profile_record)
         
-        # TODO: Implement actual hardware deployment
-        # For now, return success with mock metrics
+        # Implement actual hardware deployment
+        from ..services.experiment_service import ExperimentService
+        experiment_service = ExperimentService()
         
-        # Update profile with mock deployment results
+        # Deploy model to specified hardware
+        deployment_result = experiment_service.deploy_to_hardware(
+            model_id=data['model_id'],
+            hardware_type=data['hardware_type'],
+            deployment_config=data['deployment_config'],
+            optimize=data.get('optimize', False)
+        )
+        
+        if not deployment_result['success']:
+            return jsonify({
+                'error': 'Hardware deployment failed',
+                'details': deployment_result.get('error', 'Unknown error')
+            }), 500
+        
+        # Update profile with real deployment results
         db.update_record('hardware_profiles', profile_id, {
-            'inference_latency_ms': 0.8,
-            'power_consumption_mw': 150.0,
-            'accuracy_deployed': 0.92,
-            'memory_usage_mb': 2.5
+            'inference_latency_ms': deployment_result['metrics']['latency_ms'],
+            'power_consumption_mw': deployment_result['metrics']['power_mw'],
+            'accuracy_deployed': deployment_result['metrics']['accuracy'],
+            'memory_usage_mb': deployment_result['metrics']['memory_mb'],
+            'deployment_status': 'deployed' if deployment_result['success'] else 'failed'
         })
         
         profile = db.get_record('hardware_profiles', profile_id)

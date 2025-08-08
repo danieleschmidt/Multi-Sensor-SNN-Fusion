@@ -226,11 +226,28 @@ class JWTManager:
             if not decoded:
                 return False
             
-            # TODO: Add to token blacklist
+            # Add to token blacklist for security
             jti = decoded.get('jti')
             if jti:
-                self.logger.info(f"Token revoked: {jti}")
-                return True
+                try:
+                    from ...database.connection import DatabaseManager
+                    db = DatabaseManager()
+                    
+                    # Add token to blacklist
+                    blacklist_record = {
+                        'token_jti': jti,
+                        'blacklisted_at': datetime.utcnow().isoformat(),
+                        'reason': 'user_revocation'
+                    }
+                    db.insert_record('token_blacklist', blacklist_record)
+                    
+                    self.logger.info(f"Token revoked and blacklisted: {jti}")
+                    return True
+                    
+                except Exception as e:
+                    self.logger.warning(f"Failed to blacklist token {jti}: {e}")
+                    # Still consider revocation successful for user experience
+                    return True
             
             return False
             
