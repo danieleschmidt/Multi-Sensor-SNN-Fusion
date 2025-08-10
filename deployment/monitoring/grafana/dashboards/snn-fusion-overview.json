@@ -1,0 +1,296 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "SNN-Fusion Production Dashboard",
+    "tags": ["snn-fusion", "production", "neuromorphic"],
+    "timezone": "UTC",
+    "panels": [
+      {
+        "id": 1,
+        "title": "System Overview",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "up{job=\"snn-fusion-api\"}",
+            "legendFormat": "API Status"
+          },
+          {
+            "expr": "snn_fusion_active_models_total",
+            "legendFormat": "Active Models"
+          },
+          {
+            "expr": "snn_fusion_total_requests_per_second",
+            "legendFormat": "Requests/sec"
+          }
+        ],
+        "gridPos": {
+          "h": 6,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        }
+      },
+      {
+        "id": 2,
+        "title": "Neural Network Performance",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(snn_fusion_inference_duration_seconds[5m])",
+            "legendFormat": "Inference Latency (avg)"
+          },
+          {
+            "expr": "rate(snn_fusion_training_duration_seconds[5m])",
+            "legendFormat": "Training Latency (avg)"
+          },
+          {
+            "expr": "snn_fusion_spike_processing_rate",
+            "legendFormat": "Spike Processing Rate"
+          }
+        ],
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 6
+        }
+      },
+      {
+        "id": 3,
+        "title": "Multi-Modal Processing",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "snn_fusion_audio_processing_rate",
+            "legendFormat": "Audio Events/sec"
+          },
+          {
+            "expr": "snn_fusion_visual_processing_rate", 
+            "legendFormat": "Visual Events/sec"
+          },
+          {
+            "expr": "snn_fusion_tactile_processing_rate",
+            "legendFormat": "Tactile Events/sec"
+          }
+        ],
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 6
+        }
+      },
+      {
+        "id": 4,
+        "title": "Model Accuracy & Performance",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "snn_fusion_model_accuracy",
+            "legendFormat": "Current Accuracy"
+          },
+          {
+            "expr": "snn_fusion_model_loss",
+            "legendFormat": "Training Loss"
+          },
+          {
+            "expr": "snn_fusion_convergence_rate",
+            "legendFormat": "Convergence Rate"
+          }
+        ],
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 14
+        }
+      },
+      {
+        "id": 5,
+        "title": "Neuromorphic Hardware Utilization",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "snn_fusion_loihi_utilization_percentage",
+            "legendFormat": "Loihi 2 Utilization"
+          },
+          {
+            "expr": "snn_fusion_akida_utilization_percentage",
+            "legendFormat": "Akida Utilization"
+          },
+          {
+            "expr": "snn_fusion_spinnaker_utilization_percentage",
+            "legendFormat": "SpiNNaker 2 Utilization"
+          }
+        ],
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 14
+        }
+      },
+      {
+        "id": 6,
+        "title": "System Resources",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(container_cpu_usage_seconds_total{container=\"snn-fusion-api\"}[5m]) * 100",
+            "legendFormat": "CPU Usage %"
+          },
+          {
+            "expr": "container_memory_usage_bytes{container=\"snn-fusion-api\"} / container_spec_memory_limit_bytes * 100",
+            "legendFormat": "Memory Usage %"
+          },
+          {
+            "expr": "rate(container_network_receive_bytes_total{container=\"snn-fusion-api\"}[5m])",
+            "legendFormat": "Network In"
+          },
+          {
+            "expr": "rate(container_network_transmit_bytes_total{container=\"snn-fusion-api\"}[5m])",
+            "legendFormat": "Network Out"
+          }
+        ],
+        "gridPos": {
+          "h": 8,
+          "w": 24,
+          "x": 0,
+          "y": 22
+        }
+      },
+      {
+        "id": 7,
+        "title": "Error Rates & Response Times",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(snn_fusion_http_requests_total{status=~\"4..|5..\"}[5m])",
+            "legendFormat": "Error Rate"
+          },
+          {
+            "expr": "histogram_quantile(0.95, rate(snn_fusion_http_request_duration_seconds_bucket[5m]))",
+            "legendFormat": "95th Percentile Response Time"
+          },
+          {
+            "expr": "histogram_quantile(0.50, rate(snn_fusion_http_request_duration_seconds_bucket[5m]))",
+            "legendFormat": "Median Response Time"
+          }
+        ],
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 30
+        }
+      },
+      {
+        "id": 8,
+        "title": "Data Processing Pipeline",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "snn_fusion_data_ingestion_rate",
+            "legendFormat": "Data Ingestion Rate"
+          },
+          {
+            "expr": "snn_fusion_preprocessing_rate",
+            "legendFormat": "Preprocessing Rate"
+          },
+          {
+            "expr": "snn_fusion_encoding_rate",
+            "legendFormat": "Spike Encoding Rate"
+          },
+          {
+            "expr": "snn_fusion_fusion_rate",
+            "legendFormat": "Multi-modal Fusion Rate"
+          }
+        ],
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 30
+        }
+      },
+      {
+        "id": 9,
+        "title": "Regional Deployment Status",
+        "type": "worldmap",
+        "targets": [
+          {
+            "expr": "snn_fusion_regional_latency_ms",
+            "legendFormat": "{{region}}"
+          }
+        ],
+        "gridPos": {
+          "h": 8,
+          "w": 24,
+          "x": 0,
+          "y": 38
+        }
+      },
+      {
+        "id": 10,
+        "title": "Auto-Scaling Events",
+        "type": "table",
+        "targets": [
+          {
+            "expr": "increase(snn_fusion_scaling_events_total[1h])",
+            "legendFormat": "{{event_type}} - {{region}}"
+          }
+        ],
+        "gridPos": {
+          "h": 6,
+          "w": 12,
+          "x": 0,
+          "y": 46
+        }
+      },
+      {
+        "id": 11,
+        "title": "Compliance Status", 
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "snn_fusion_gdpr_compliance_score",
+            "legendFormat": "GDPR Score"
+          },
+          {
+            "expr": "snn_fusion_data_sovereignty_violations_total",
+            "legendFormat": "Data Sovereignty Violations"
+          },
+          {
+            "expr": "snn_fusion_consent_withdrawal_rate",
+            "legendFormat": "Consent Withdrawal Rate"
+          }
+        ],
+        "gridPos": {
+          "h": 6,
+          "w": 12,
+          "x": 12,
+          "y": 46
+        }
+      }
+    ],
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    },
+    "refresh": "30s",
+    "schemaVersion": 30,
+    "version": 1,
+    "annotations": {
+      "list": [
+        {
+          "name": "Deployments",
+          "datasource": "Prometheus",
+          "enable": true,
+          "expr": "snn_fusion_deployment_events",
+          "textFormat": "{{event_type}}: {{description}}",
+          "titleFormat": "Deployment Event"
+        }
+      ]
+    }
+  }
+}
