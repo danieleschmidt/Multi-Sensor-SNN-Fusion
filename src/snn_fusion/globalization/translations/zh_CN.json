@@ -1,0 +1,64 @@
+{
+  "system.startup": {
+    "default": "System starting up...",
+    "translation": "系统启动中...",
+    "context": "System initialization message",
+    "variables": []
+  },
+  "system.ready": {
+    "default": "Neuromorphic system ready",
+    "translation": "神经形态系统就绪",
+    "context": "System ready notification",
+    "variables": []
+  },
+  "error.general": {
+    "default": "An error occurred",
+    "translation": "发生错误",
+    "context": "General error message",
+    "variables": []
+  },
+  "error.network": {
+    "default": "Network connection failed",
+    "translation": "网络连接失败",
+    "context": "Network error message",
+    "variables": []
+  },
+  "model.loading": {
+    "default": "Loading neuromorphic model...",
+    "translation": "正在加载神经形态模型...",
+    "context": "Model loading status",
+    "variables": []
+  },
+  "model.training": {
+    "default": "Training model",
+    "translation": "正在训练模型",
+    "context": "Model training status",
+    "variables": []
+  },
+  "data.processing": {
+    "default": "Processing {count} samples",
+    "translation": "正在处理 {count} 个样本",
+    "context": "Data processing status with variable",
+    "variables": [
+      "count"
+    ]
+  },
+  "fusion.multimodal": {
+    "default": "Multi-modal data fusion in progress",
+    "translation": "多模态数据融合进行中",
+    "context": "Multi-modal fusion status",
+    "variables": []
+  },
+  "performance.optimization": {
+    "default": "Optimizing system performance",
+    "translation": "正在优化系统性能",
+    "context": "Performance optimization message",
+    "variables": []
+  },
+  "security.validation": {
+    "default": "Validating security requirements",
+    "translation": "正在验证安全要求",
+    "context": "Security validation message",
+    "variables": []
+  }
+}

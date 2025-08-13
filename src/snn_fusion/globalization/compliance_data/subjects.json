@@ -1,0 +1,47 @@
+{
+  "user_001": {
+    "subject_id": "user_001",
+    "jurisdiction": "Germany",
+    "applicable_regulations": [
+      "gdpr"
+    ],
+    "consent_records": {
+      "neuromorphic_training": {
+        "consent_id": "user_001_neuromorphic_training_1755086295",
+        "granted": true,
+        "timestamp": 1755086295.6694057,
+        "expiry": 1786622295.6694045
+      }
+    },
+    "data_categories": [
+      "pii",
+      "biometric"
+    ],
+    "preferences": {},
+    "created_at": 1755086295.6681833,
+    "last_updated": 1755086295.6695104
+  },
+  "user_002": {
+    "subject_id": "user_002",
+    "jurisdiction": "California",
+    "applicable_regulations": [
+      "ccpa",
+      "pipeda"
+    ],
+    "consent_records": {
+      "analytics": {
+        "consent_id": "user_002_analytics_1755086295",
+        "granted": true,
+        "timestamp": 1755086295.6702905,
+        "expiry": null
+      }
+    },
+    "data_categories": [
+      "pii",
+      "behavioral"
+    ],
+    "preferences": {},
+    "created_at": 1755086295.6685615,
+    "last_updated": 1755086295.670297
+  }
+}

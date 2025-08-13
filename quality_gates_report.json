@@ -1,0 +1,249 @@
+{
+  "summary": {
+    "total_gates": 8,
+    "passed_gates": 4,
+    "failed_gates": 4,
+    "overall_pass_rate": 0.5,
+    "overall_quality_score": 0.812271875,
+    "production_ready": false,
+    "execution_time_total": 6.67572021484375e-05
+  },
+  "category_scores": {
+    "performance": 0.77575,
+    "security": 0.8183333333333334,
+    "reliability": 0.9141833333333333
+  },
+  "gate_results": [
+    {
+      "name": "Performance Gate",
+      "passed": false,
+      "score": 0.77575,
+      "threshold": 0.8,
+      "execution_time": 1.71661376953125e-05,
+      "details": {
+        "average_latency_ms": 5.2,
+        "throughput_ops_per_sec": 850.0,
+        "memory_usage_mb": 45.3,
+        "cpu_utilization_percent": 35.2,
+        "p95_latency_ms": 12.8,
+        "p99_latency_ms": 28.5,
+        "error_rate_percent": 0.15
+      },
+      "recommendations": []
+    },
+    {
+      "name": "Security Gate",
+      "passed": false,
+      "score": 0.8183333333333334,
+      "threshold": 0.9,
+      "execution_time": 8.58306884765625e-06,
+      "details": {
+        "vulnerabilities_found": 2,
+        "critical_vulnerabilities": 0,
+        "high_severity": 1,
+        "medium_severity": 1,
+        "low_severity": 0,
+        "total_files_scanned": 45,
+        "secure_code_patterns": 38,
+        "insecure_patterns_detected": 2,
+        "input_validation_coverage": 92.5,
+        "encryption_usage": "detected",
+        "authentication_mechanisms": "implemented",
+        "authorization_controls": "implemented"
+      },
+      "recommendations": [
+        "Address high-severity security issues",
+        "Replace insecure coding patterns with secure alternatives"
+      ]
+    },
+    {
+      "name": "Reliability Gate",
+      "passed": true,
+      "score": 0.9141833333333333,
+      "threshold": 0.85,
+      "execution_time": 5.245208740234375e-06,
+      "details": {
+        "error_recovery_rate": 94.2,
+        "system_uptime_percent": 99.7,
+        "graceful_degradation_scenarios": 8,
+        "successful_degradation_scenarios": 7,
+        "mean_time_to_recovery_seconds": 1.2,
+        "fault_tolerance_mechanisms": [
+          "retry_logic",
+          "fallback_data",
+          "circuit_breaker"
+        ],
+        "monitored_components": 15,
+        "healthy_components": 14,
+        "automated_recovery_success_rate": 89.3,
+        "manual_intervention_required": 2
+      },
+      "recommendations": [
+        "Reduce manual intervention requirements through automation"
+      ]
+    },
+    {
+      "name": "Code Quality Gate",
+      "passed": false,
+      "score": 0.6289,
+      "threshold": 0.75,
+      "execution_time": 6.9141387939453125e-06,
+      "details": {
+        "total_lines_of_code": 28547,
+        "comment_percentage": 18.3,
+        "complexity_score": 2.1,
+        "duplication_percentage": 3.2,
+        "maintainability_index": 78.5,
+        "technical_debt_hours": 8.2,
+        "code_smells": 5,
+        "magic_numbers": 3,
+        "long_functions": 2,
+        "documentation_coverage": 85.7
+      },
+      "recommendations": [
+        "Address 5 code smells"
+      ]
+    },
+    {
+      "name": "Test Coverage Gate",
+      "passed": true,
+      "score": 0.7696000000000001,
+      "threshold": 0.75,
+      "execution_time": 4.76837158203125e-06,
+      "details": {
+        "line_coverage_percentage": 78.5,
+        "branch_coverage_percentage": 71.2,
+        "function_coverage_percentage": 85.3,
+        "statement_coverage_percentage": 76.8,
+        "total_tests": 31,
+        "passing_tests": 23,
+        "failing_tests": 8,
+        "test_execution_time_seconds": 0.04,
+        "test_success_rate": 74.2,
+        "integration_test_coverage": 89.3,
+        "unit_test_coverage": 67.8,
+        "end_to_end_test_coverage": 45.2
+      },
+      "recommendations": [
+        "Increase line coverage to at least 80%",
+        "Fix 8 failing tests",
+        "Add more end-to-end test scenarios"
+      ]
+    },
+    {
+      "name": "Compliance Gate",
+      "passed": false,
+      "score": 0.8663000000000001,
+      "threshold": 0.9,
+      "execution_time": 1.0728836059570312e-05,
+      "details": {
+        "gdpr_compliance_score": 87.3,
+        "ccpa_compliance_score": 82.1,
+        "hipaa_compliance_score": 78.9,
+        "soc2_compliance_score": 91.2,
+        "encryption_requirements_met": true,
+        "data_retention_policies": true,
+        "access_control_mechanisms": true,
+        "audit_logging": true,
+        "privacy_by_design": true,
+        "data_minimization": true,
+        "consent_management": false,
+        "data_portability": true,
+        "compliance_violations": 3,
+        "remediation_required": [
+          "consent_management",
+          "gdpr_improvements",
+          "hipaa_enhancements"
+        ]
+      },
+      "recommendations": [
+        "Improve GDPR compliance to at least 90%",
+        "Address 3 compliance violations",
+        "Implement consent management mechanisms",
+        "Address compliance gap: consent_management",
+        "Address compliance gap: gdpr_improvements",
+        "Address compliance gap: hipaa_enhancements"
+      ]
+    },
+    {
+      "name": "System Integration Gate",
+      "passed": true,
+      "score": 0.9099,
+      "threshold": 0.8,
+      "execution_time": 5.9604644775390625e-06,
+      "details": {
+        "generation_1_integration": 100.0,
+        "generation_2_integration": 100.0,
+        "generation_3_integration": 80.0,
+        "full_system_integration": 100.0,
+        "component_compatibility": 94.1,
+        "api_compatibility": 97.3,
+        "data_flow_integrity": 89.7,
+        "cross_platform_compatibility": 85.2,
+        "backwards_compatibility": 91.8,
+        "integration_test_success_rate": 74.2,
+        "component_coverage": 34,
+        "integration_points_tested": 28
+      },
+      "recommendations": [
+        "Improve Generation 3 scaling feature integration",
+        "Fix failing integration tests",
+        "Ensure data flow integrity across all components",
+        "Improve cross-platform compatibility"
+      ]
+    },
+    {
+      "name": "Documentation Gate",
+      "passed": true,
+      "score": 0.8152083333333333,
+      "threshold": 0.7,
+      "execution_time": 7.3909759521484375e-06,
+      "details": {
+        "api_documentation_coverage": 76.8,
+        "code_documentation_coverage": 85.7,
+        "user_guide_completeness": 45.2,
+        "installation_guide_present": true,
+        "configuration_documentation": true,
+        "troubleshooting_guide": false,
+        "architecture_documentation": true,
+        "security_documentation": true,
+        "performance_benchmarks_documented": true,
+        "changelog_maintained": false,
+        "readme_quality_score": 72.3,
+        "documentation_freshness_days": 2
+      },
+      "recommendations": [
+        "Improve API documentation coverage",
+        "Complete user guide documentation",
+        "Create troubleshooting guide",
+        "Maintain changelog for version tracking"
+      ]
+    }
+  ],
+  "production_readiness": {
+    "ready": false,
+    "critical_gates_status": false,
+    "blocking_issues": [
+      "Performance Gate",
+      "Security Gate",
+      "Code Quality Gate",
+      "Compliance Gate"
+    ],
+    "priority_recommendations": [
+      "Address high-severity security issues",
+      "Replace insecure coding patterns with secure alternatives",
+      "Address 5 code smells",
+      "Improve GDPR compliance to at least 90%",
+      "Address 3 compliance violations",
+      "Implement consent management mechanisms",
+      "Address compliance gap: consent_management",
+      "Address compliance gap: gdpr_improvements",
+      "Address compliance gap: hipaa_enhancements"
+    ]
+  },
+  "deployment_decision": {
+    "recommendation": "BLOCK",
+    "confidence": 0.812271875,
+    "risk_level": "MEDIUM"
+  }
+}
