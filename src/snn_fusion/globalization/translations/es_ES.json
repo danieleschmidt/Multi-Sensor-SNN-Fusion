@@ -1,0 +1,64 @@
+{
+  "system.startup": {
+    "default": "System starting up...",
+    "translation": "Sistema iniciándose...",
+    "context": "System initialization message",
+    "variables": []
+  },
+  "system.ready": {
+    "default": "Neuromorphic system ready",
+    "translation": "Sistema neuromorfico listo",
+    "context": "System ready notification",
+    "variables": []
+  },
+  "error.general": {
+    "default": "An error occurred",
+    "translation": "Ha ocurrido un error",
+    "context": "General error message",
+    "variables": []
+  },
+  "error.network": {
+    "default": "Network connection failed",
+    "translation": "Conexión de red fallida",
+    "context": "Network error message",
+    "variables": []
+  },
+  "model.loading": {
+    "default": "Loading neuromorphic model...",
+    "translation": "Cargando modelo neuromorfico...",
+    "context": "Model loading status",
+    "variables": []
+  },
+  "model.training": {
+    "default": "Training model",
+    "translation": "Entrenando modelo",
+    "context": "Model training status",
+    "variables": []
+  },
+  "data.processing": {
+    "default": "Processing {count} samples",
+    "translation": "Procesando {count} muestras",
+    "context": "Data processing status with variable",
+    "variables": [
+      "count"
+    ]
+  },
+  "fusion.multimodal": {
+    "default": "Multi-modal data fusion in progress",
+    "translation": "Fusión de datos multimodal en progreso",
+    "context": "Multi-modal fusion status",
+    "variables": []
+  },
+  "performance.optimization": {
+    "default": "Optimizing system performance",
+    "translation": "Optimizando rendimiento del sistema",
+    "context": "Performance optimization message",
+    "variables": []
+  },
+  "security.validation": {
+    "default": "Validating security requirements",
+    "translation": "Validando requisitos de seguridad",
+    "context": "Security validation message",
+    "variables": []
+  }
+}

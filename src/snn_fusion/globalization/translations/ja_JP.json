@@ -1,0 +1,64 @@
+{
+  "system.startup": {
+    "default": "System starting up...",
+    "translation": "システム起動中...",
+    "context": "System initialization message",
+    "variables": []
+  },
+  "system.ready": {
+    "default": "Neuromorphic system ready",
+    "translation": "ニューロモルフィックシステム準備完了",
+    "context": "System ready notification",
+    "variables": []
+  },
+  "error.general": {
+    "default": "An error occurred",
+    "translation": "エラーが発生しました",
+    "context": "General error message",
+    "variables": []
+  },
+  "error.network": {
+    "default": "Network connection failed",
+    "translation": "ネットワーク接続に失敗しました",
+    "context": "Network error message",
+    "variables": []
+  },
+  "model.loading": {
+    "default": "Loading neuromorphic model...",
+    "translation": "ニューロモルフィックモデル読み込み中...",
+    "context": "Model loading status",
+    "variables": []
+  },
+  "model.training": {
+    "default": "Training model",
+    "translation": "モデルトレーニング中",
+    "context": "Model training status",
+    "variables": []
+  },
+  "data.processing": {
+    "default": "Processing {count} samples",
+    "translation": "{count}サンプルを処理中",
+    "context": "Data processing status with variable",
+    "variables": [
+      "count"
+    ]
+  },
+  "fusion.multimodal": {
+    "default": "Multi-modal data fusion in progress",
+    "translation": "マルチモーダルデータフュージョン実行中",
+    "context": "Multi-modal fusion status",
+    "variables": []
+  },
+  "performance.optimization": {
+    "default": "Optimizing system performance",
+    "translation": "システムパフォーマンス最適化中",
+    "context": "Performance optimization message",
+    "variables": []
+  },
+  "security.validation": {
+    "default": "Validating security requirements",
+    "translation": "セキュリティ要件検証中",
+    "context": "Security validation message",
+    "variables": []
+  }
+}

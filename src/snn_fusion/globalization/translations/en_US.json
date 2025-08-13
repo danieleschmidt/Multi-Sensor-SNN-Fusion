@@ -1,0 +1,45 @@
+{
+  "system.startup": {
+    "default": "System starting up...",
+    "context": "System initialization message"
+  },
+  "system.ready": {
+    "default": "Neuromorphic system ready",
+    "context": "System ready notification"
+  },
+  "error.general": {
+    "default": "An error occurred",
+    "context": "General error message"
+  },
+  "error.network": {
+    "default": "Network connection failed",
+    "context": "Network error message"
+  },
+  "model.loading": {
+    "default": "Loading neuromorphic model...",
+    "context": "Model loading status"
+  },
+  "model.training": {
+    "default": "Training model",
+    "context": "Model training status"
+  },
+  "data.processing": {
+    "default": "Processing {count} samples",
+    "variables": [
+      "count"
+    ],
+    "context": "Data processing status with variable"
+  },
+  "fusion.multimodal": {
+    "default": "Multi-modal data fusion in progress",
+    "context": "Multi-modal fusion status"
+  },
+  "performance.optimization": {
+    "default": "Optimizing system performance",
+    "context": "Performance optimization message"
+  },
+  "security.validation": {
+    "default": "Validating security requirements",
+    "context": "Security validation message"
+  }
+}

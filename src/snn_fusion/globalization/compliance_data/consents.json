@@ -1,0 +1,24 @@
+{
+  "user_001_neuromorphic_training_1755086295": {
+    "consent_id": "user_001_neuromorphic_training_1755086295",
+    "subject_id": "user_001",
+    "purpose": "neuromorphic_training",
+    "consent_type": "explicit",
+    "granted": true,
+    "timestamp": 1755086295.6694057,
+    "expiry_timestamp": 1786622295.6694045,
+    "withdrawal_timestamp": null,
+    "metadata": {}
+  },
+  "user_002_analytics_1755086295": {
+    "consent_id": "user_002_analytics_1755086295",
+    "subject_id": "user_002",
+    "purpose": "analytics",
+    "consent_type": "implicit",
+    "granted": true,
+    "timestamp": 1755086295.6702905,
+    "expiry_timestamp": null,
+    "withdrawal_timestamp": null,
+    "metadata": {}
+  }
+}
