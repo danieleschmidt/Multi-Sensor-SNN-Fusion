@@ -4,8 +4,8 @@
     "passed_tests": 17,
     "failed_tests": 0,
     "success_rate": 100.0,
-    "duration_seconds": 0.004570484161376953,
-    "timestamp": 1755183416.8643005
+    "duration_seconds": 0.007568359375,
+    "timestamp": 1755400996.638879
   },
   "section_results": [
     {
@@ -46,7 +46,7 @@
           ]
         }
       ],
-      "timestamp": 1755183416.8607962
+      "timestamp": 1755400996.6338842
     },
     {
       "section": "Production Component Imports",
@@ -76,7 +76,7 @@
           "components_found": 4
         }
       ],
-      "timestamp": 1755183416.8616226
+      "timestamp": 1755400996.6349878
     },
     {
       "section": "Configuration Management",
@@ -106,7 +106,7 @@
           ]
         }
       ],
-      "timestamp": 1755183416.862436
+      "timestamp": 1755400996.6364732
     },
     {
       "section": "Interface Compatibility",
@@ -116,11 +116,11 @@
           "passed": true,
           "message": "Common interface patterns found: 5",
           "common_methods": [
+            "deployment_manager.py: start/stop methods",
             "health_monitor.py: start/stop methods",
             "health_monitor.py: get methods",
             "operational_dashboard.py: start/stop methods",
-            "operational_dashboard.py: get methods",
-            "deployment_manager.py: start/stop methods"
+            "operational_dashboard.py: get methods"
           ]
         },
         {
@@ -137,13 +137,13 @@
           "passed": true,
           "message": "Logging implementation: 3 files",
           "files_with_logging": [
+            "deployment_manager.py",
             "health_monitor.py",
-            "operational_dashboard.py",
-            "deployment_manager.py"
+            "operational_dashboard.py"
           ]
         }
       ],
-      "timestamp": 1755183416.8634799
+      "timestamp": 1755400996.6380477
     },
     {
       "section": "Documentation Completeness",
@@ -159,6 +159,12 @@
           "message": "Files with good docstring coverage: 3",
           "docstring_coverage": [
             {
+              "file": "deployment_manager.py",
+              "classes": 7,
+              "docstrings": 56,
+              "coverage_ratio": 4.0
+            },
+            {
               "file": "health_monitor.py",
               "classes": 8,
               "docstrings": 80,
@@ -169,12 +175,6 @@
               "classes": 7,
               "docstrings": 68,
               "coverage_ratio": 4.857142857142857
-            },
-            {
-              "file": "deployment_manager.py",
-              "classes": 7,
-              "docstrings": 56,
-              "coverage_ratio": 4.0
             }
           ]
         },
@@ -184,7 +184,7 @@
           "message": "README files exist: True"
         }
       ],
-      "timestamp": 1755183416.86424
+      "timestamp": 1755400996.6387556
     }
   ]
 }
