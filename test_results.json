@@ -5,33 +5,33 @@
     "failed": 0,
     "skipped": 10,
     "pass_rate": 16.666666666666664,
-    "total_duration": 0.03284955024719238,
-    "average_test_time": 0.0027374625205993652
+    "total_duration": 0.029628515243530273,
+    "average_test_time": 0.002469042936960856
   },
   "tests": [
     {
       "name": "Import Package init",
       "status": "SKIP",
       "details": "Requires heavy dependencies: No module named 'torch'",
-      "duration": 0.001750946044921875
+      "duration": 0.009238958358764648
     },
     {
       "name": "Import Validation utilities",
       "status": "SKIP",
       "details": "Requires heavy dependencies: No module named 'torch'",
-      "duration": 0.0007903575897216797
+      "duration": 0.0007584095001220703
     },
     {
       "name": "Import Security utilities",
       "status": "SKIP",
       "details": "Requires heavy dependencies: No module named 'torch'",
-      "duration": 0.0006020069122314453
+      "duration": 0.0006728172302246094
     },
     {
       "name": "Import Logging utilities",
       "status": "SKIP",
       "details": "Requires heavy dependencies: No module named 'torch'",
-      "duration": 0.0006618499755859375
+      "duration": 0.0008814334869384766
     },
     {
       "name": "Configuration validation",
@@ -72,15 +72,15 @@
     {
       "name": "File I/O benchmark",
       "status": "PASS",
-      "details": "Throughput: 238.72 MB/s",
-      "duration": 0.008378028869628906
+      "details": "Throughput: 360.52 MB/s",
+      "duration": 0.005547523498535156
     },
     {
       "name": "Memory allocation benchmark",
       "status": "PASS",
-      "details": "Rate: 7216.38 allocs/s",
-      "duration": 0.013857364654541016
+      "details": "Rate: 12896.82 allocs/s",
+      "duration": 0.007753849029541016
     }
   ],
-  "timestamp": 1754282350.9219394
+  "timestamp": 1755400994.878028
 }
