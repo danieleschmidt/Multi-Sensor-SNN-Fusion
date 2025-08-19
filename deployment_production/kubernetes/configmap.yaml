@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: snn-fusion-config
+  namespace: snn-fusion
+data:
+  SNN_FUSION_ENV: "production"
+  SNN_FUSION_LOG_LEVEL: "INFO"
+  SNN_FUSION_WORKERS: "4"
+  SNN_FUSION_PORT: "8080"
+  SNN_FUSION_TARGET_LATENCY_MS: "5.0"
+  SNN_FUSION_CACHE_SIZE: "1000"

@@ -1,249 +1,144 @@
 {
-  "summary": {
-    "total_gates": 8,
-    "passed_gates": 4,
-    "failed_gates": 4,
-    "overall_pass_rate": 0.5,
-    "overall_quality_score": 0.812271875,
-    "production_ready": false,
-    "execution_time_total": 6.67572021484375e-05
-  },
-  "category_scores": {
-    "performance": 0.77575,
-    "security": 0.8183333333333334,
-    "reliability": 0.9141833333333333
-  },
-  "gate_results": [
+  "overall_score": 89.0,
+  "total": 10,
+  "passed": 9,
+  "failed": 1,
+  "errors": 0,
+  "production_ready": false,
+  "pass_rate": 0.9,
+  "critical_gates_passed": 2,
+  "detailed_results": [
     {
-      "name": "Performance Gate",
-      "passed": false,
-      "score": 0.77575,
-      "threshold": 0.8,
-      "execution_time": 1.71661376953125e-05,
+      "gate": "Code Structure",
+      "status": "PASS",
+      "score": 100.0,
+      "execution_time_ms": 3.1347274780273438,
       "details": {
-        "average_latency_ms": 5.2,
-        "throughput_ops_per_sec": 850.0,
-        "memory_usage_mb": 45.3,
-        "cpu_utilization_percent": 35.2,
-        "p95_latency_ms": 12.8,
-        "p99_latency_ms": 28.5,
-        "error_rate_percent": 0.15
+        "directory_structure": "3/3 required directories",
+        "python_files": "118 Python files found",
+        "key_algorithms": "3/3 key algorithm files",
+        "configuration": "3/3 config files"
       },
-      "recommendations": []
+      "error": ""
     },
     {
-      "name": "Security Gate",
-      "passed": false,
-      "score": 0.8183333333333334,
-      "threshold": 0.9,
-      "execution_time": 8.58306884765625e-06,
+      "gate": "Security Scan",
+      "status": "FAIL",
+      "score": 25.0,
+      "execution_time_ms": 362.35904693603516,
       "details": {
-        "vulnerabilities_found": 2,
-        "critical_vulnerabilities": 0,
-        "high_severity": 1,
-        "medium_severity": 1,
-        "low_severity": 0,
-        "total_files_scanned": 45,
-        "secure_code_patterns": 38,
-        "insecure_patterns_detected": 2,
-        "input_validation_coverage": 92.5,
-        "encryption_usage": "detected",
-        "authentication_mechanisms": "implemented",
-        "authorization_controls": "implemented"
+        "hardcoded_secrets": "31 potential security issues",
+        "sql_injection": "21 potential SQL patterns",
+        "unsafe_code": "17 unsafe patterns",
+        "error_handling": "111/158 files with error handling"
       },
-      "recommendations": [
-        "Address high-severity security issues",
-        "Replace insecure coding patterns with secure alternatives"
-      ]
+      "error": "Potential hardcoded key in performance_validation.py; Potential hardcoded api_key in test_comprehensive_integration.py; Potential hardcoded key in test_comprehensive_quality_gates.py; Potential hardcoded key in test_generation3_scaling.py; Potential hardcoded key in validate_generation3_lite.py; Potential hardcoded key in lightweight_research_validation.py; Potential hardcoded api_key in tests/test_comprehensive_suite.py; Potential hardcoded key in src/snn_fusion/algorithms/fusion.py; Potential hardcoded key in src/snn_fusion/algorithms/novel_ttfs_tsa_fusion.py; Potential hardcoded key in src/snn_fusion/algorithms/temporal_spike_attention.py; Potential hardcoded key in src/snn_fusion/api/app.py; Potential hardcoded key in src/snn_fusion/deployment/distributed_deployment.py; Potential hardcoded key in src/snn_fusion/distributed/cluster_manager.py; Potential hardcoded key in src/snn_fusion/globalization/i18n_manager.py; Potential hardcoded key in src/snn_fusion/globalization/multi_region_manager.py; Potential hardcoded key in src/snn_fusion/globalization/regional.py; Potential hardcoded key in src/snn_fusion/models/readouts.py; Potential hardcoded key in src/snn_fusion/monitoring/alerts.py; Potential hardcoded key in src/snn_fusion/monitoring/comprehensive_monitoring.py; Potential hardcoded key in src/snn_fusion/optimization/memory.py; Potential hardcoded key in src/snn_fusion/optimization/performance_optimizer.py; Potential hardcoded key in src/snn_fusion/research/comprehensive_research_validation.py; Potential hardcoded key in src/snn_fusion/scaling/advanced_scaling.py; Potential hardcoded key in src/snn_fusion/scaling/auto_scaler.py; Potential hardcoded key in src/snn_fusion/scaling/distributed_neuromorphic_processing.py; Potential hardcoded key in src/snn_fusion/scaling/load_balancer.py; Potential hardcoded key in src/snn_fusion/scaling/performance_optimizer.py; Potential hardcoded key in src/snn_fusion/utils/backup_recovery.py; Potential hardcoded key in src/snn_fusion/utils/error_handling.py; Potential hardcoded api_key in src/snn_fusion/utils/security_enhanced.py; Potential hardcoded key in src/snn_fusion/integrations/auth/jwt_auth.py; Unsafe __import__ usage in test_basic_structure.py; Unsafe __import__ usage in test_generation2_robust.py; Unsafe __import__ usage in test_security.py; Unsafe eval( usage in comprehensive_quality_gates.py; Unsafe exec( usage in comprehensive_quality_gates.py; Unsafe __import__ usage in comprehensive_quality_gates.py; Unsafe eval( usage in src/snn_fusion/cli.py; Unsafe eval( usage in src/snn_fusion/optimization/performance_optimizer.py; Unsafe eval( usage in src/snn_fusion/quality/integration_tests.py; Unsafe eval( usage in src/snn_fusion/quality/security_scanner.py; Unsafe exec( usage in src/snn_fusion/quality/security_scanner.py; Unsafe __import__ usage in src/snn_fusion/quality/security_scanner.py; Unsafe __import__ usage in src/snn_fusion/security/input_validation.py; Unsafe eval( usage in src/snn_fusion/services/experiment_service.py; Unsafe eval( usage in src/snn_fusion/training/trainer.py; Unsafe eval( usage in src/snn_fusion/utils/metrics.py; Unsafe __import__ usage in src/snn_fusion/utils/security.py"
     },
     {
-      "name": "Reliability Gate",
-      "passed": true,
-      "score": 0.9141833333333333,
-      "threshold": 0.85,
-      "execution_time": 5.245208740234375e-06,
+      "gate": "Performance Benchmarks",
+      "status": "PASS",
+      "score": 100.0,
+      "execution_time_ms": 111.79399490356445,
       "details": {
-        "error_recovery_rate": 94.2,
-        "system_uptime_percent": 99.7,
-        "graceful_degradation_scenarios": 8,
-        "successful_degradation_scenarios": 7,
-        "mean_time_to_recovery_seconds": 1.2,
-        "fault_tolerance_mechanisms": [
-          "retry_logic",
-          "fallback_data",
-          "circuit_breaker"
-        ],
-        "monitored_components": 15,
-        "healthy_components": 14,
-        "automated_recovery_success_rate": 89.3,
-        "manual_intervention_required": 2
+        "latency": "Average latency: 1.11ms (Excellent)",
+        "throughput": "Throughput: 895.0 items/sec (Excellent)",
+        "memory": "Memory usage within acceptable limits"
       },
-      "recommendations": [
-        "Reduce manual intervention requirements through automation"
-      ]
+      "error": ""
     },
     {
-      "name": "Code Quality Gate",
-      "passed": false,
-      "score": 0.6289,
-      "threshold": 0.75,
-      "execution_time": 6.9141387939453125e-06,
+      "gate": "Algorithm Validation",
+      "status": "PASS",
+      "score": 80.0,
+      "execution_time_ms": 0.8087158203125,
       "details": {
-        "total_lines_of_code": 28547,
-        "comment_percentage": 18.3,
-        "complexity_score": 2.1,
-        "duplication_percentage": 3.2,
-        "maintainability_index": 78.5,
-        "technical_debt_hours": 8.2,
-        "code_smells": 5,
-        "magic_numbers": 3,
-        "long_functions": 2,
-        "documentation_coverage": 85.7
+        "validation_results": "2/3 validation files found",
+        "algorithm_components": "4/4 key components",
+        "validation_framework": "4/4 validation components"
       },
-      "recommendations": [
-        "Address 5 code smells"
-      ]
+      "error": ""
     },
     {
-      "name": "Test Coverage Gate",
-      "passed": true,
-      "score": 0.7696000000000001,
-      "threshold": 0.75,
-      "execution_time": 4.76837158203125e-06,
+      "gate": "Integration Tests",
+      "status": "PASS",
+      "score": 100.0,
+      "execution_time_ms": 0.14853477478027344,
       "details": {
-        "line_coverage_percentage": 78.5,
-        "branch_coverage_percentage": 71.2,
-        "function_coverage_percentage": 85.3,
-        "statement_coverage_percentage": 76.8,
-        "total_tests": 31,
-        "passing_tests": 23,
-        "failing_tests": 8,
-        "test_execution_time_seconds": 0.04,
-        "test_success_rate": 74.2,
-        "integration_test_coverage": 89.3,
-        "unit_test_coverage": 67.8,
-        "end_to_end_test_coverage": 45.2
+        "lightweight_validation": "Lightweight validation script available",
+        "advanced_system": "Advanced scaling system available",
+        "examples": "3 example scripts",
+        "imports": "Core imports successful"
       },
-      "recommendations": [
-        "Increase line coverage to at least 80%",
-        "Fix 8 failing tests",
-        "Add more end-to-end test scenarios"
-      ]
+      "error": ""
     },
     {
-      "name": "Compliance Gate",
-      "passed": false,
-      "score": 0.8663000000000001,
-      "threshold": 0.9,
-      "execution_time": 1.0728836059570312e-05,
+      "gate": "Memory Safety",
+      "status": "PASS",
+      "score": 75.0,
+      "execution_time_ms": 52.60610580444336,
       "details": {
-        "gdpr_compliance_score": 87.3,
-        "ccpa_compliance_score": 82.1,
-        "hipaa_compliance_score": 78.9,
-        "soc2_compliance_score": 91.2,
-        "encryption_requirements_met": true,
-        "data_retention_policies": true,
-        "access_control_mechanisms": true,
-        "audit_logging": true,
-        "privacy_by_design": true,
-        "data_minimization": true,
-        "consent_management": false,
-        "data_portability": true,
-        "compliance_violations": 3,
-        "remediation_required": [
-          "consent_management",
-          "gdpr_improvements",
-          "hipaa_enhancements"
-        ]
+        "context_managers": "137/158 files use context managers",
+        "resource_cleanup": "Only 29/158 files have cleanup",
+        "memory_efficiency": "30 files use memory-efficient patterns",
+        "caching": "44 files implement caching (good for performance)"
       },
-      "recommendations": [
-        "Improve GDPR compliance to at least 90%",
-        "Address 3 compliance violations",
-        "Implement consent management mechanisms",
-        "Address compliance gap: consent_management",
-        "Address compliance gap: gdpr_improvements",
-        "Address compliance gap: hipaa_enhancements"
-      ]
+      "error": ""
     },
     {
-      "name": "System Integration Gate",
-      "passed": true,
-      "score": 0.9099,
-      "threshold": 0.8,
-      "execution_time": 5.9604644775390625e-06,
+      "gate": "Error Handling",
+      "status": "PASS",
+      "score": 100.0,
+      "execution_time_ms": 73.98128509521484,
       "details": {
-        "generation_1_integration": 100.0,
-        "generation_2_integration": 100.0,
-        "generation_3_integration": 80.0,
-        "full_system_integration": 100.0,
-        "component_compatibility": 94.1,
-        "api_compatibility": 97.3,
-        "data_flow_integrity": 89.7,
-        "cross_platform_compatibility": 85.2,
-        "backwards_compatibility": 91.8,
-        "integration_test_success_rate": 74.2,
-        "component_coverage": 34,
-        "integration_points_tested": 28
+        "exception_handling": "111/158 files have exception handling",
+        "specific_exceptions": "53/158 files use specific exceptions",
+        "logging": "86/158 files have logging",
+        "graceful_degradation": "93 files implement graceful degradation"
       },
-      "recommendations": [
-        "Improve Generation 3 scaling feature integration",
-        "Fix failing integration tests",
-        "Ensure data flow integrity across all components",
-        "Improve cross-platform compatibility"
-      ]
+      "error": ""
     },
     {
-      "name": "Documentation Gate",
-      "passed": true,
-      "score": 0.8152083333333333,
-      "threshold": 0.7,
-      "execution_time": 7.3909759521484375e-06,
+      "gate": "Documentation Quality",
+      "status": "PASS",
+      "score": 110.0,
+      "execution_time_ms": 17.717838287353516,
       "details": {
-        "api_documentation_coverage": 76.8,
-        "code_documentation_coverage": 85.7,
-        "user_guide_completeness": 45.2,
-        "installation_guide_present": true,
-        "configuration_documentation": true,
-        "troubleshooting_guide": false,
-        "architecture_documentation": true,
-        "security_documentation": true,
-        "performance_benchmarks_documented": true,
-        "changelog_maintained": false,
-        "readme_quality_score": 72.3,
-        "documentation_freshness_days": 2
+        "readme": "1 README file(s) found",
+        "readme_quality": "Comprehensive README",
+        "docstrings": "158/158 files have docstrings",
+        "documentation_dir": "Docs directory with 4 files",
+        "examples": "3 example files",
+        "type_hints": "122/158 files have type hints"
       },
-      "recommendations": [
-        "Improve API documentation coverage",
-        "Complete user guide documentation",
-        "Create troubleshooting guide",
-        "Maintain changelog for version tracking"
-      ]
+      "error": ""
+    },
+    {
+      "gate": "Configuration Validation",
+      "status": "PASS",
+      "score": 100.0,
+      "execution_time_ms": 0.4451274871826172,
+      "details": {
+        "config_files": "5/5 configuration files",
+        "pyproject_quality": "2/3 required sections",
+        "deployment_config": "2 deployment configuration directories",
+        "environment_config": "1 environment configuration files"
+      },
+      "error": ""
+    },
+    {
+      "gate": "Deployment Readiness",
+      "status": "PASS",
+      "score": 100.0,
+      "execution_time_ms": 52.76751518249512,
+      "details": {
+        "docker": "Dockerfile present",
+        "orchestration": "2 Kubernetes deployment files",
+        "monitoring": "7 monitoring configuration files",
+        "health_checks": "87 files implement health checks",
+        "production_scripts": "3 deployment scripts"
+      },
+      "error": ""
     }
   ],
-  "production_readiness": {
-    "ready": false,
-    "critical_gates_status": false,
-    "blocking_issues": [
-      "Performance Gate",
-      "Security Gate",
-      "Code Quality Gate",
-      "Compliance Gate"
-    ],
-    "priority_recommendations": [
-      "Address high-severity security issues",
-      "Replace insecure coding patterns with secure alternatives",
-      "Address 5 code smells",
-      "Improve GDPR compliance to at least 90%",
-      "Address 3 compliance violations",
-      "Implement consent management mechanisms",
-      "Address compliance gap: consent_management",
-      "Address compliance gap: gdpr_improvements",
-      "Address compliance gap: hipaa_enhancements"
-    ]
-  },
-  "deployment_decision": {
-    "recommendation": "BLOCK",
-    "confidence": 0.812271875,
-    "risk_level": "MEDIUM"
-  }
+  "timestamp": "2025-08-19 03:39:57"
 }
