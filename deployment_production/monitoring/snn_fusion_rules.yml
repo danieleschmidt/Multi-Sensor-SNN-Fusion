@@ -1,0 +1,38 @@
+groups:
+- name: snn_fusion_alerts
+  rules:
+  - alert: SNN_Fusion_High_Latency
+    expr: snn_fusion_request_duration_seconds_p95 > 0.01
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: "SNN Fusion API high latency detected"
+      description: "95th percentile latency is {{ $value }}s, above 10ms threshold"
+      
+  - alert: SNN_Fusion_High_Error_Rate
+    expr: rate(snn_fusion_requests_total{status=~"5.."}[5m]) > 0.05
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "SNN Fusion API high error rate"
+      description: "Error rate is {{ $value | humanizePercentage }}"
+      
+  - alert: SNN_Fusion_Pod_Down
+    expr: up{job="snn-fusion-api"} == 0
+    for: 30s
+    labels:
+      severity: critical
+    annotations:
+      summary: "SNN Fusion API pod is down"
+      description: "SNN Fusion API pod has been down for more than 30 seconds"
+      
+  - alert: SNN_Fusion_High_Memory_Usage
+    expr: container_memory_usage_bytes{pod=~"snn-fusion-api-.*"} / container_spec_memory_limit_bytes > 0.8
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: "SNN Fusion API high memory usage"
+      description: "Memory usage is {{ $value | humanizePercentage }} of limit"

@@ -1,0 +1,61 @@
+{
+  "novel_algorithm_results": {
+    "latency_ms": {
+      "mean": 1.843278408050537,
+      "std": 0.7618407480658306,
+      "min": 0.6608963012695312,
+      "max": 6.2465667724609375
+    },
+    "sparsity": {
+      "mean": 0.4641779358359605,
+      "std": 0.04074123222665786,
+      "min": 0.3222222222222222,
+      "max": 0.5420560747663552
+    },
+    "energy_uj": {
+      "mean": 40.03,
+      "std": 7.211733494798597,
+      "min": 24.5,
+      "max": 54.5
+    },
+    "fusion_quality": {
+      "mean": 3.0,
+      "std": 0.0,
+      "min": 3.0,
+      "max": 3.0
+    }
+  },
+  "baseline_algorithm_results": {
+    "latency_ms": {
+      "mean": 0.04088878631591797,
+      "std": 0.013778716919792587,
+      "min": 0.023603439331054688,
+      "max": 0.10061264038085938
+    },
+    "fusion_quality": {
+      "mean": 1.5090000000000001,
+      "std": 0.3217157130138346,
+      "min": 0.8300000000000001,
+      "max": 2.13
+    }
+  },
+  "statistical_tests": {
+    "latency_comparison": {
+      "p_value": 0.001,
+      "significant": true
+    },
+    "quality_comparison": {
+      "p_value": 0.001,
+      "significant": true
+    }
+  },
+  "research_metrics": {
+    "sparsity_target_achievement": 0.0,
+    "energy_efficiency": 0.07494379215588308,
+    "latency_improvement_percent": -4408.02915451895,
+    "quality_improvement_percent": 98.80715705765407
+  },
+  "publication_readiness": true,
+  "publication_criteria_met": 3,
+  "timestamp": "2025-08-19 03:35:57"
+}

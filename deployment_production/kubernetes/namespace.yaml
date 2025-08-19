@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: snn-fusion
+  labels:
+    name: snn-fusion
+    environment: production

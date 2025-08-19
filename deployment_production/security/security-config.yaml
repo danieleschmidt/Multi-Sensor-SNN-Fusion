@@ -1,0 +1,32 @@
+# Security Scanning Configuration
+security:
+  image_scanning:
+    enabled: true
+    scanner: "trivy"
+    fail_on_critical: true
+    
+  runtime_security:
+    enabled: true
+    policies:
+      - no_privileged_containers
+      - no_root_user
+      - read_only_filesystem
+      - drop_all_capabilities
+      
+  network_security:
+    enabled: true
+    policies:
+      - default_deny_all
+      - allow_ingress_from_nginx
+      - allow_egress_to_dns
+      
+  secrets_management:
+    enabled: true
+    provider: "kubernetes"
+    encryption_at_rest: true
+    
+compliance:
+  standards:
+    - "CIS_Kubernetes_Benchmark"
+    - "NIST_Cybersecurity_Framework"
+    - "SOC2_Type2"

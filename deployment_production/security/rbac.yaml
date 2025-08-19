@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: snn-fusion-service-account
+  namespace: snn-fusion
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: snn-fusion
+  name: snn-fusion-role
+rules:
+- apiGroups: [""]
+  resources: ["pods", "services", "endpoints"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["apps"]
+  resources: ["deployments", "replicasets"]
+  verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: snn-fusion-role-binding
+  namespace: snn-fusion
+subjects:
+- kind: ServiceAccount
+  name: snn-fusion-service-account
+  namespace: snn-fusion
+roleRef:
+  kind: Role
+  name: snn-fusion-role
+  apiGroup: rbac.authorization.k8s.io
