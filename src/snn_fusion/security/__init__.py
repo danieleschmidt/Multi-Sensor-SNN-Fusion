@@ -1,27 +1,22 @@
 """
-SNN-Fusion Security Module
+Security Module for SNN-Fusion
 
-Comprehensive security framework for neuromorphic computing systems,
-including spike train validation, temporal integrity checking, and
-hardware-specific security controls.
+Provides comprehensive security measures for neuromorphic computing systems
+including adversarial detection, input validation, and secure model deployment.
 """
 
 from .neuromorphic_security import (
-    SecurityThreat,
+    ThreatLevel,
     SecurityEvent,
-    SpikeTrainValidator,
-    TemporalIntegrityChecker,
-    NeuromorphicSecurityManager,
-    neuromorphic_secure,
-    SecurityError,
+    SpikeTrainAnalyzer,
+    AdversarialDetector,
+    SecurityValidator,
 )
 
 __all__ = [
-    'SecurityThreat',
-    'SecurityEvent',
-    'SpikeTrainValidator', 
-    'TemporalIntegrityChecker',
-    'NeuromorphicSecurityManager',
-    'neuromorphic_secure',
-    'SecurityError',
+    "ThreatLevel",
+    "SecurityEvent", 
+    "SpikeTrainAnalyzer",
+    "AdversarialDetector",
+    "SecurityValidator",
 ]
