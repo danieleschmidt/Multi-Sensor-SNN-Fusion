@@ -7,6 +7,36 @@ experimental tracking and model storage.
 
 from typing import Dict, OrderedDict
 from collections import OrderedDict
+import sqlite3
+import logging
+
+
+def run_migrations(db_path: str) -> bool:
+    """Run database migrations."""
+    try:
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+        
+        create_tables(cursor)
+        
+        conn.commit()
+        conn.close()
+        return True
+    except Exception as e:
+        logging.error(f"Migration failed: {e}")
+        return False
+
+
+def create_tables(cursor) -> None:
+    """Create database tables."""
+    
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS experiments (
+            id INTEGER PRIMARY KEY,
+            name TEXT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
 
 
 def get_migrations(db_type: str = "sqlite") -> OrderedDict[str, str]:

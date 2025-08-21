@@ -27,7 +27,6 @@ from .models import (
 from .datasets import (
     MAVENDataset,
     MultiModalDataLoader,
-    SpikeEncoder,
 )
 from .training import (
     SNNTrainer,
@@ -36,9 +35,17 @@ from .training import (
 )
 from .preprocessing import (
     CochlearModel,
+    BiauralProcessor,
+    AudioSpikeEncoder,
     GaborFilters,
-    WaveletTransform,
     EventEncoder,
+    VisualSpikeEncoder,
+    WaveletTransform,
+    IMUEncoder,
+    TactileSpikeEncoder,
+    PopulationEncoder,
+    TemporalEncoder,
+    RateEncoder,
 )
 
 __all__ = [
@@ -53,14 +60,21 @@ __all__ = [
     # Datasets
     "MAVENDataset",
     "MultiModalDataLoader",
-    "SpikeEncoder",
     # Training
     "SNNTrainer",
     "STDPLearner", 
     "TemporalLoss",
     # Preprocessing
     "CochlearModel",
+    "BiauralProcessor",
+    "AudioSpikeEncoder",
     "GaborFilters",
-    "WaveletTransform",
     "EventEncoder",
+    "VisualSpikeEncoder",
+    "WaveletTransform",
+    "IMUEncoder",
+    "TactileSpikeEncoder",
+    "PopulationEncoder",
+    "TemporalEncoder",
+    "RateEncoder",
 ]
