@@ -20,5 +20,27 @@
     "expiry_timestamp": null,
     "withdrawal_timestamp": null,
     "metadata": {}
+  },
+  "user_001_neuromorphic_training_1756008564": {
+    "consent_id": "user_001_neuromorphic_training_1756008564",
+    "subject_id": "user_001",
+    "purpose": "neuromorphic_training",
+    "consent_type": "explicit",
+    "granted": true,
+    "timestamp": 1756008564.6996946,
+    "expiry_timestamp": 1787544564.6996925,
+    "withdrawal_timestamp": null,
+    "metadata": {}
+  },
+  "user_002_analytics_1756008564": {
+    "consent_id": "user_002_analytics_1756008564",
+    "subject_id": "user_002",
+    "purpose": "analytics",
+    "consent_type": "implicit",
+    "granted": true,
+    "timestamp": 1756008564.7002864,
+    "expiry_timestamp": null,
+    "withdrawal_timestamp": null,
+    "metadata": {}
   }
 }
