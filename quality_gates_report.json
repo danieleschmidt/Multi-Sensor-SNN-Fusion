@@ -12,10 +12,10 @@
       "gate": "Code Structure",
       "status": "PASS",
       "score": 100.0,
-      "execution_time_ms": 3.857135772705078,
+      "execution_time_ms": 3.666400909423828,
       "details": {
         "directory_structure": "3/3 required directories",
-        "python_files": "136 Python files found",
+        "python_files": "140 Python files found",
         "key_algorithms": "3/3 key algorithm files",
         "configuration": "3/3 config files"
       },
@@ -25,23 +25,23 @@
       "gate": "Security Scan",
       "status": "FAIL",
       "score": 25.0,
-      "execution_time_ms": 462.6131057739258,
+      "execution_time_ms": 490.3395175933838,
       "details": {
-        "hardcoded_secrets": "41 potential security issues",
-        "sql_injection": "21 potential SQL patterns",
-        "unsafe_code": "21 unsafe patterns",
-        "error_handling": "131/181 files with error handling"
+        "hardcoded_secrets": "45 potential security issues",
+        "sql_injection": "17 potential SQL patterns",
+        "unsafe_code": "20 unsafe patterns",
+        "error_handling": "134/184 files with error handling"
       },
-      "error": "Potential hardcoded key in comprehensive_validation_suite.py; Potential hardcoded key in performance_validation.py; Potential hardcoded password in production_deployment_manager.py; Potential hardcoded key in simple_validation_test.py; Potential hardcoded api_key in test_comprehensive_integration.py; Potential hardcoded key in test_comprehensive_quality_gates.py; Potential hardcoded key in test_generation3_scaling.py; Potential hardcoded key in validate_generation3_lite.py; Potential hardcoded api_key in tests/test_comprehensive_suite.py; Potential hardcoded key in src/snn_fusion/algorithms/consciousness_driven_stdp.py; Potential hardcoded key in src/snn_fusion/algorithms/fusion.py; Potential hardcoded key in src/snn_fusion/algorithms/novel_ttfs_tsa_fusion.py; Potential hardcoded key in src/snn_fusion/algorithms/quantum_neuromorphic_optimizer.py; Potential hardcoded key in src/snn_fusion/algorithms/temporal_spike_attention.py; Potential hardcoded key in src/snn_fusion/algorithms/zero_shot_multimodal_lsm.py; Potential hardcoded key in src/snn_fusion/algorithms/meta_cognitive_neuromorphic_fusion.py; Potential hardcoded key in src/snn_fusion/api/app.py; Potential hardcoded key in src/snn_fusion/deployment/distributed_deployment.py; Potential hardcoded key in src/snn_fusion/distributed/cluster_manager.py; Potential hardcoded key in src/snn_fusion/globalization/i18n_manager.py; Potential hardcoded key in src/snn_fusion/globalization/multi_region_manager.py; Potential hardcoded key in src/snn_fusion/globalization/regional.py; Potential hardcoded key in src/snn_fusion/models/readouts.py; Potential hardcoded key in src/snn_fusion/monitoring/alerts.py; Potential hardcoded key in src/snn_fusion/monitoring/comprehensive_monitoring.py; Potential hardcoded key in src/snn_fusion/optimization/memory.py; Potential hardcoded key in src/snn_fusion/optimization/performance_optimizer.py; Potential hardcoded key in src/snn_fusion/research/advanced_research_validation_framework.py; Potential hardcoded key in src/snn_fusion/research/comprehensive_research_validation.py; Potential hardcoded key in src/snn_fusion/scaling/advanced_distributed_neuromorphic.py; Potential hardcoded key in src/snn_fusion/scaling/advanced_scaling.py; Potential hardcoded key in src/snn_fusion/scaling/auto_scaler.py; Potential hardcoded key in src/snn_fusion/scaling/autonomous_swarm_neuromorphic.py; Potential hardcoded key in src/snn_fusion/scaling/distributed_neuromorphic_processing.py; Potential hardcoded key in src/snn_fusion/scaling/load_balancer.py; Potential hardcoded key in src/snn_fusion/scaling/performance_optimizer.py; Potential hardcoded key in src/snn_fusion/scaling/autonomous_neuromorphic_swarm.py; Potential hardcoded key in src/snn_fusion/utils/backup_recovery.py; Potential hardcoded key in src/snn_fusion/utils/error_handling.py; Potential hardcoded api_key in src/snn_fusion/utils/security_enhanced.py; Potential hardcoded key in src/snn_fusion/integrations/auth/jwt_auth.py; Unsafe eval( usage in comprehensive_quality_gates.py; Unsafe exec( usage in comprehensive_quality_gates.py; Unsafe __import__ usage in comprehensive_quality_gates.py; Unsafe __import__ usage in test_basic_structure.py; Unsafe __import__ usage in test_generation2_robust.py; Unsafe __import__ usage in test_security.py; Unsafe eval( usage in src/snn_fusion/cli.py; Unsafe eval( usage in src/snn_fusion/algorithms/quantum_neuromorphic_optimizer.py; Unsafe eval( usage in src/snn_fusion/algorithms/meta_cognitive_neuromorphic_fusion.py; Unsafe eval( usage in src/snn_fusion/monitoring/comprehensive_threat_monitoring.py; Unsafe eval( usage in src/snn_fusion/optimization/performance_optimizer.py; Unsafe eval( usage in src/snn_fusion/quality/integration_tests.py; Unsafe eval( usage in src/snn_fusion/quality/security_scanner.py; Unsafe exec( usage in src/snn_fusion/quality/security_scanner.py; Unsafe __import__ usage in src/snn_fusion/quality/security_scanner.py; Unsafe __import__ usage in src/snn_fusion/security/input_validation.py; Unsafe eval( usage in src/snn_fusion/security/advanced_neuromorphic_security.py; Unsafe eval( usage in src/snn_fusion/services/experiment_service.py; Unsafe eval( usage in src/snn_fusion/training/trainer.py; Unsafe eval( usage in src/snn_fusion/utils/metrics.py; Unsafe __import__ usage in src/snn_fusion/utils/security.py"
+      "error": "Potential hardcoded key in comprehensive_validation_suite.py; Potential hardcoded key in performance_validation.py; Potential hardcoded password in production_deployment_manager.py; Potential hardcoded key in simple_validation_test.py; Potential hardcoded api_key in test_comprehensive_integration.py; Potential hardcoded key in test_comprehensive_quality_gates.py; Potential hardcoded key in test_generation3_scaling.py; Potential hardcoded key in validate_generation3_lite.py; Potential hardcoded api_key in tests/test_comprehensive_suite.py; Potential hardcoded key in src/snn_fusion/algorithms/consciousness_driven_stdp.py; Potential hardcoded key in src/snn_fusion/algorithms/fusion.py; Potential hardcoded key in src/snn_fusion/algorithms/meta_cognitive_neuromorphic_fusion.py; Potential hardcoded key in src/snn_fusion/algorithms/novel_ttfs_tsa_fusion.py; Potential hardcoded key in src/snn_fusion/algorithms/quantum_neuromorphic_optimizer.py; Potential hardcoded key in src/snn_fusion/algorithms/temporal_spike_attention.py; Potential hardcoded key in src/snn_fusion/algorithms/zero_shot_multimodal_lsm.py; Potential hardcoded key in src/snn_fusion/algorithms/breakthrough_quantum_neuromorphic_optimizer.py; Potential hardcoded key in src/snn_fusion/algorithms/revolutionary_consciousness_fusion.py; Potential hardcoded key in src/snn_fusion/api/app.py; Potential hardcoded key in src/snn_fusion/deployment/distributed_deployment.py; Potential hardcoded key in src/snn_fusion/distributed/cluster_manager.py; Potential hardcoded key in src/snn_fusion/globalization/i18n_manager.py; Potential hardcoded key in src/snn_fusion/globalization/multi_region_manager.py; Potential hardcoded key in src/snn_fusion/globalization/regional.py; Potential hardcoded key in src/snn_fusion/models/readouts.py; Potential hardcoded key in src/snn_fusion/monitoring/alerts.py; Potential hardcoded key in src/snn_fusion/monitoring/comprehensive_monitoring.py; Potential hardcoded key in src/snn_fusion/optimization/memory.py; Potential hardcoded key in src/snn_fusion/optimization/performance_optimizer.py; Potential hardcoded key in src/snn_fusion/research/advanced_research_validation_framework.py; Potential hardcoded key in src/snn_fusion/research/comprehensive_research_validation.py; Potential hardcoded key in src/snn_fusion/scaling/advanced_distributed_neuromorphic.py; Potential hardcoded key in src/snn_fusion/scaling/advanced_scaling.py; Potential hardcoded key in src/snn_fusion/scaling/auto_scaler.py; Potential hardcoded key in src/snn_fusion/scaling/autonomous_neuromorphic_swarm.py; Potential hardcoded key in src/snn_fusion/scaling/autonomous_swarm_neuromorphic.py; Potential hardcoded key in src/snn_fusion/scaling/distributed_neuromorphic_processing.py; Potential hardcoded key in src/snn_fusion/scaling/load_balancer.py; Potential hardcoded key in src/snn_fusion/scaling/performance_optimizer.py; Potential hardcoded key in src/snn_fusion/security/enhanced_security_protocols.py; Potential hardcoded key in src/snn_fusion/utils/backup_recovery.py; Potential hardcoded key in src/snn_fusion/utils/error_handling.py; Potential hardcoded api_key in src/snn_fusion/utils/security_enhanced.py; Potential hardcoded key in src/snn_fusion/utils/robust_neuromorphic_error_handling.py; Potential hardcoded key in src/snn_fusion/integrations/auth/jwt_auth.py; Unsafe eval( usage in comprehensive_quality_gates.py; Unsafe exec( usage in comprehensive_quality_gates.py; Unsafe __import__ usage in comprehensive_quality_gates.py; Unsafe __import__ usage in test_basic_structure.py; Unsafe __import__ usage in test_generation2_robust.py; Unsafe eval( usage in src/snn_fusion/cli.py; Unsafe eval( usage in src/snn_fusion/algorithms/meta_cognitive_neuromorphic_fusion.py; Unsafe eval( usage in src/snn_fusion/algorithms/quantum_neuromorphic_optimizer.py; Unsafe eval( usage in src/snn_fusion/monitoring/comprehensive_threat_monitoring.py; Unsafe eval( usage in src/snn_fusion/optimization/performance_optimizer.py; Unsafe eval( usage in src/snn_fusion/quality/integration_tests.py; Unsafe eval( usage in src/snn_fusion/quality/security_scanner.py; Unsafe exec( usage in src/snn_fusion/quality/security_scanner.py; Unsafe __import__ usage in src/snn_fusion/quality/security_scanner.py; Unsafe eval( usage in src/snn_fusion/security/advanced_neuromorphic_security.py; Unsafe __import__ usage in src/snn_fusion/security/input_validation.py; Unsafe eval( usage in src/snn_fusion/services/experiment_service.py; Unsafe eval( usage in src/snn_fusion/training/trainer.py; Unsafe eval( usage in src/snn_fusion/utils/metrics.py; Unsafe __import__ usage in src/snn_fusion/utils/security.py"
     },
     {
       "gate": "Performance Benchmarks",
       "status": "PASS",
       "score": 100.0,
-      "execution_time_ms": 115.21196365356445,
+      "execution_time_ms": 115.89598655700684,
       "details": {
         "latency": "Average latency: 1.15ms (Excellent)",
-        "throughput": "Throughput: 868.7 items/sec (Excellent)",
+        "throughput": "Throughput: 863.5 items/sec (Excellent)",
         "memory": "Memory usage within acceptable limits"
       },
       "error": ""
@@ -50,7 +50,7 @@
       "gate": "Algorithm Validation",
       "status": "PASS",
       "score": 80.0,
-      "execution_time_ms": 0.9167194366455078,
+      "execution_time_ms": 0.8754730224609375,
       "details": {
         "validation_results": "2/3 validation files found",
         "algorithm_components": "4/4 key components",
@@ -75,12 +75,12 @@
       "gate": "Memory Safety",
       "status": "PASS",
       "score": 75.0,
-      "execution_time_ms": 66.69211387634277,
+      "execution_time_ms": 64.55397605895996,
       "details": {
-        "context_managers": "158/181 files use context managers",
-        "resource_cleanup": "Only 34/181 files have cleanup",
-        "memory_efficiency": "44 files use memory-efficient patterns",
-        "caching": "55 files implement caching (good for performance)"
+        "context_managers": "161/184 files use context managers",
+        "resource_cleanup": "Only 34/184 files have cleanup",
+        "memory_efficiency": "47 files use memory-efficient patterns",
+        "caching": "57 files implement caching (good for performance)"
       },
       "error": ""
     },
@@ -88,12 +88,12 @@
       "gate": "Error Handling",
       "status": "PASS",
       "score": 100.0,
-      "execution_time_ms": 88.8364315032959,
+      "execution_time_ms": 86.9758129119873,
       "details": {
-        "exception_handling": "131/181 files have exception handling",
-        "specific_exceptions": "63/181 files use specific exceptions",
-        "logging": "106/181 files have logging",
-        "graceful_degradation": "111 files implement graceful degradation"
+        "exception_handling": "134/184 files have exception handling",
+        "specific_exceptions": "65/184 files use specific exceptions",
+        "logging": "110/184 files have logging",
+        "graceful_degradation": "115 files implement graceful degradation"
       },
       "error": ""
     },
@@ -101,14 +101,14 @@
       "gate": "Documentation Quality",
       "status": "PASS",
       "score": 110.0,
-      "execution_time_ms": 22.621631622314453,
+      "execution_time_ms": 21.75450325012207,
       "details": {
         "readme": "1 README file(s) found",
         "readme_quality": "Comprehensive README",
-        "docstrings": "181/181 files have docstrings",
+        "docstrings": "184/184 files have docstrings",
         "documentation_dir": "Docs directory with 4 files",
         "examples": "3 example files",
-        "type_hints": "144/181 files have type hints"
+        "type_hints": "147/184 files have type hints"
       },
       "error": ""
     },
@@ -116,7 +116,7 @@
       "gate": "Configuration Validation",
       "status": "PASS",
       "score": 100.0,
-      "execution_time_ms": 0.44345855712890625,
+      "execution_time_ms": 0.6442070007324219,
       "details": {
         "config_files": "5/5 configuration files",
         "pyproject_quality": "2/3 required sections",
@@ -129,16 +129,16 @@
       "gate": "Deployment Readiness",
       "status": "PASS",
       "score": 100.0,
-      "execution_time_ms": 69.13399696350098,
+      "execution_time_ms": 69.37074661254883,
       "details": {
         "docker": "Dockerfile present",
         "orchestration": "3 Kubernetes deployment files",
         "monitoring": "13 monitoring configuration files",
-        "health_checks": "100 files implement health checks",
+        "health_checks": "104 files implement health checks",
         "production_scripts": "3 deployment scripts"
       },
       "error": ""
     }
   ],
-  "timestamp": "2025-08-24 04:08:54"
+  "timestamp": "2025-08-25 17:44:58"
 }
