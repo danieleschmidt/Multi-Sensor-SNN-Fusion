@@ -1,0 +1,152 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: breakthrough-neuromorphic-swarm
+  namespace: terragon-ai
+  labels:
+    app: breakthrough-neuromorphic-swarm
+    version: v1
+    component: neuromorphic-swarm
+    breakthrough: quantum-consciousness
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: breakthrough-neuromorphic-swarm
+  template:
+    metadata:
+      labels:
+        app: breakthrough-neuromorphic-swarm
+        version: v1
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '9090'
+    spec:
+      containers:
+      - name: breakthrough-swarm
+        image: terragon/breakthrough-neuromorphic-swarm:latest
+        ports:
+        - containerPort: 8080
+          name: http
+        - containerPort: 8081
+          name: health
+        - containerPort: 9090
+          name: metrics
+        resources:
+          requests:
+            cpu: 4
+            memory: 16Gi
+            nvidia.com/gpu: 2
+          limits:
+            cpu: 8
+            memory: 32Gi
+            nvidia.com/gpu: 2
+        env:
+        - name: DEPLOYMENT_ID
+          value: "f99a7381"
+        - name: LOG_LEVEL
+          value: "INFO"
+        - name: ENABLE_QUANTUM_ACCELERATION
+          value: "True"
+        - name: BATCH_PROCESSING_SIZE
+          value: "32"
+        - name: PROMETHEUS_PORT
+          value: "9090"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8081
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8081
+          initialDelaySeconds: 15
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 2
+        volumeMounts:
+        - name: quantum-config
+          mountPath: /app/config
+        - name: model-cache
+          mountPath: /app/cache
+      volumes:
+      - name: quantum-config
+        configMap:
+          name: quantum-neuromorphic-config
+      - name: model-cache
+        emptyDir:
+          sizeLimit: 10Gi
+      nodeSelector:
+        kubernetes.io/arch: amd64
+        node.kubernetes.io/gpu: "true"
+      tolerations:
+      - key: "nvidia.com/gpu"
+        operator: "Exists"
+        effect: "NoSchedule"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: breakthrough-neuromorphic-swarm-service
+  namespace: terragon-ai
+  labels:
+    app: breakthrough-neuromorphic-swarm
+spec:
+  selector:
+    app: breakthrough-neuromorphic-swarm
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+    protocol: TCP
+  - name: metrics
+    port: 9090
+    targetPort: 9090
+    protocol: TCP
+  type: ClusterIP
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: breakthrough-neuromorphic-swarm-hpa
+  namespace: terragon-ai
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: breakthrough-neuromorphic-swarm
+  minReplicas: 2
+  maxReplicas: 20
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Percent
+        value: 10
+        periodSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 60
+      policies:
+      - type: Percent
+        value: 50
+        periodSeconds: 30
+      - type: Pods
+        value: 2
+        periodSeconds: 60

@@ -1,0 +1,101 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: breakthrough-neuromorphic-swarm-monitor
+  namespace: terragon-ai
+  labels:
+    app: breakthrough-neuromorphic-swarm
+spec:
+  selector:
+    matchLabels:
+      app: breakthrough-neuromorphic-swarm
+  endpoints:
+  - port: metrics
+    interval: 30s
+    path: /metrics
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: breakthrough-neuromorphic-swarm-dashboard
+  namespace: terragon-ai
+  labels:
+    grafana_dashboard: "1"
+data:
+  breakthrough-swarm-dashboard.json: |
+    {
+      "dashboard": {
+        "id": null,
+        "title": "Breakthrough Neuromorphic Swarm",
+        "tags": ["terragon", "neuromorphic", "quantum", "consciousness"],
+        "style": "dark",
+        "timezone": "browser",
+        "panels": [
+          {
+            "id": 1,
+            "title": "Swarm Processing Throughput",
+            "type": "stat",
+            "targets": [
+              {
+                "expr": "rate(breakthrough_swarm_processing_total[5m])",
+                "legendFormat": "Samples/sec"
+              }
+            ],
+            "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0}
+          },
+          {
+            "id": 2,
+            "title": "Quantum Entanglement Strength",
+            "type": "graph",
+            "targets": [
+              {
+                "expr": "breakthrough_swarm_entanglement_strength",
+                "legendFormat": "Entanglement"
+              }
+            ],
+            "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0}
+          },
+          {
+            "id": 3,
+            "title": "Consciousness Levels",
+            "type": "heatmap",
+            "targets": [
+              {
+                "expr": "histogram_quantile(0.95, breakthrough_consciousness_level_histogram)",
+                "legendFormat": "95th percentile"
+              }
+            ],
+            "gridPos": {"h": 8, "w": 24, "x": 0, "y": 8}
+          },
+          {
+            "id": 4,
+            "title": "Ultra-Sparse Efficiency",
+            "type": "gauge",
+            "targets": [
+              {
+                "expr": "breakthrough_sparse_efficiency_ratio",
+                "legendFormat": "Efficiency"
+              }
+            ],
+            "gridPos": {"h": 8, "w": 12, "x": 0, "y": 16}
+          },
+          {
+            "id": 5,
+            "title": "Auto-Scaling Events",
+            "type": "logs",
+            "targets": [
+              {
+                "expr": "{job=\"breakthrough-neuromorphic-swarm\", level=\"info\"} |= \"scaling\"",
+                "legendFormat": "Scaling Events"
+              }
+            ],
+            "gridPos": {"h": 8, "w": 12, "x": 12, "y": 16}
+          }
+        ],
+        "time": {
+          "from": "now-1h",
+          "to": "now"
+        },
+        "refresh": "30s"
+      }
+    }
