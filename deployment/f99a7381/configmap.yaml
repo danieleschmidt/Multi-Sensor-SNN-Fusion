@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: quantum-neuromorphic-config
+  namespace: terragon-ai
+data:
+  quantum_config.json: |
+    {
+      "quantum_error_correction": {
+        "code_distance": 3,
+        "syndrome_check_interval": 10,
+        "error_threshold": 0.15,
+        "decoherence_protection": true
+      },
+      "ultra_sparse_config": {
+        "target_sparsity": 0.01,
+        "prediction_horizon_ms": 20.0,
+        "energy_budget_nj": 1.0,
+        "ghost_spike_threshold": 0.8
+      },
+      "consciousness_config": {
+        "attention_schema_size": 64,
+        "max_attention_heads": 16,
+        "topology_update_frequency": 10,
+        "consciousness_adaptation_rate": 0.1
+      },
+      "swarm_config": {
+        "n_swarm_nodes": 16,
+        "quantum_coherence_radius": 0.7,
+        "auto_scale_enabled": true,
+        "parallel_processing": true
+      }
+    }
+  logging_config.json: |
+    {
+      "version": 1,
+      "disable_existing_loggers": false,
+      "formatters": {
+        "standard": {
+          "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+        },
+        "detailed": {
+          "format": "%(asctime)s - %(name)s - %(levelname)s - %(module)s - %(funcName)s - %(message)s"
+        }
+      },
+      "handlers": {
+        "default": {
+          "level": "INFO",
+          "formatter": "standard",
+          "class": "logging.StreamHandler"
+        }
+      },
+      "loggers": {
+        "": {
+          "handlers": [
+            "default"
+          ],
+          "level": "INFO",
+          "propagate": false
+        }
+      }
+    }
